@@ -11,7 +11,11 @@ import {
   NEW_APPLICATION_FORM_TECHNICAL_INFO,
 } from '@/constants/newApplicationForm';
 
-export default function TechnicalInfo() {
+export default function TechnicalInfo({
+  openTechnicalInfoRulesModal,
+}: {
+  openTechnicalInfoRulesModal: (value: boolean) => void;
+}) {
   const [formData, setFormData] = useState<Record<string, string>>(() =>
     Object.fromEntries(
       [
@@ -62,6 +66,7 @@ export default function TechnicalInfo() {
             <div
               key={item.key}
               className="relative rounded-[24px] h-[200px] py-4 px-5 border border-[#CECECE]"
+              onClick={() => openTechnicalInfoRulesModal(true)}
             >
               <p className="text-[14px] font-regular text-[#141414]">
                 {item.label}
