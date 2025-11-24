@@ -98,3 +98,20 @@ export interface UserItem {
 /*LANGUAGE */
 
 export type LanguageKey = keyof typeof LanguageEnum;
+
+/*NEW APPLICATION FORM*/
+export type FieldType = 'text' | 'select';
+
+export type BaseItem = {
+  key: string;
+  label: string;
+  type: FieldType;
+  required?: boolean;
+  options?: { label: string; value: string }[];
+};
+
+export type TextAreaItem = {
+  key: string;
+  label: string;
+  required?: boolean;
+};
