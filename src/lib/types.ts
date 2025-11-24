@@ -99,6 +99,23 @@ export interface UserItem {
 
 export type LanguageKey = keyof typeof LanguageEnum;
 
+
+/*NEW APPLICATION FORM*/
+export type FieldType = 'text' | 'select';
+
+export type BaseItem = {
+  key: string;
+  label: string;
+  type: FieldType;
+  required?: boolean;
+  options?: { label: string; value: string }[];
+};
+
+export type TextAreaItem = {
+  key: string;
+  label: string;
+  required?: boolean;
+
 /*EMAILS*/
 
 export type EmailLog = {
@@ -121,4 +138,5 @@ export type EmailLog = {
   username: string | null;
   created_at: string | null;
   updated_at: string | null;
+
 };

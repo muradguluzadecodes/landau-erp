@@ -39,7 +39,7 @@ const menuItems = [
   {
     key: 'forms',
     icon: <FileText size={18} />,
-    label: <Link href="/muraciet-form">Müraciət form</Link>,
+    label: <Link href="application-form">Müraciət form</Link>,
   },
 
   {
