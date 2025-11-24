@@ -85,6 +85,26 @@
   .white-spin .ant-spin-dot-item {
     background-color: white !important;
   }
+
+  .spin-blue .ant-spin-dot-item {
+    background-color: #3b82f6 !important; /* blue */
+  }
+
+  .spin-red .ant-spin-dot-item {
+    background-color: #ef4444 !important; /* red */
+  }
+
+  .spin-gray .ant-spin-dot-item {
+    background-color: #6b7280 !important; /* gray */
+  }
+
+  .spin-green .ant-spin-dot-item {
+    background-color: #22c55e !important; /* green */
+  }
+
+  .spin-white .ant-spin-dot-item {
+    background-color: white !important;
+  }
 }
 
 @utility sidebar-menu-item {
@@ -295,26 +315,36 @@
 
 .ant-table {
   border-spacing: 200px 200px !important; /* horizontal=0, vertical=12px */
-  border-collapse: separate !important;
+  /* border-collapse: separate !important; */
+  border-radius: 20px !important;
+  overflow: hidden !important;
 }
 
 .ant-table-cell {
-  border: none !important;
-  /* border-radius: 20px !important; */
-  margin-bottom: 50px !important;
+  @apply border-b! border-border!;
 }
+
+/*USERS TABLE*/
 
 .custom-users-table .ant-table-tbody > tr > td {
-  padding: 10px 12px !important; /* remove default padding */
-  margin-bottom: 50px !important;
-  border: none !important;
+  padding: 20px 12px !important; /* remove default padding */
 }
 
+.ant-table-thead > tr > th {
+  @apply bg-subSection-bg!;
+}
 /* wrap content in a card-like row */
 .custom-users-table .ant-table-row {
-  background: transparent !important;
+  @apply bg-subSection-bg! mb-10!;
 }
 
 .custom-users-table .ant-table-row > td > div {
-  @apply bg-white shadow-sm rounded-xl p-4 mb-4 cursor-pointer;
+  @apply bg-subSection-bg! mb-10! shadow-sm rounded-xl p-4 mb-4 cursor-pointer;
+}
+
+.ant-table-column-sorter {
+  display: none !important;
+}
+.ant-table-column-sorters .ant-table-column-sorter {
+  display: none !important;
 }

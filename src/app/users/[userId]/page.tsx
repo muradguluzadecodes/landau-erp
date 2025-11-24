@@ -5,6 +5,7 @@ import { Pencil } from 'lucide-react';
 import { notFound, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import { sendEmail } from '@/api/user-management/sendEmail';
 import { updateUserInfo } from '@/api/user-management/updateUserInfo';
 import FloatInput from '@/components/FloatInput';
 import { LoadingPage } from '@/components/LoadingPage';
@@ -74,6 +75,11 @@ export default function Page() {
     mutationFn: updateUserInfo,
   });
 
+  const { mutate: mutateSendEmail, isPending: isPendingSendEmail } =
+    useMutation({
+      mutationFn: sendEmail,
+    });
+
   const isDisabled =
     JSON.stringify(userData) === JSON.stringify(initialUserData);
 
@@ -94,6 +100,10 @@ export default function Page() {
         },
       },
     );
+  };
+
+  const handleSendEmail = () => {
+    mutateSendEmail(userId as string);
   };
 
   if (isLoading) return <LoadingPage />;
@@ -150,18 +160,18 @@ export default function Page() {
             <MainBtn
               variant="outline"
               text="Sil"
-              className="w-[120px] border-red-500 text-red-500"
+              color="red"
+              className="w-[100px]!"
               onClick={() => setIsOpenDeleteModal(true)}
             />
-            <MainBtn
-              variant="outline"
-              text="Deaktiv et"
-              className="w-[120px] border-gray-38! text-gray-38!"
-            />
+            <MainBtn variant="outline" text="Deaktiv et" color="gray" />
             <MainBtn
               variant="outline"
               text="Email gonder"
-              className="w-[120px] border-green-600! text-green-600!"
+              className="w-[180px]!"
+              color="green"
+              onClick={handleSendEmail}
+              isLoading={isPendingSendEmail}
             />
           </div>
         </div>

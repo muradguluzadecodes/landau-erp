@@ -5,8 +5,12 @@ export const RESET_PASSWORD = '/accounts/users/reset-password/';
 export const USER_BASE = '/accounts/users';
 export const GET_USER = '/me';
 export const CHANGE_USER_PASSWORD = '/change-password/';
+export const USER_SEND_EMAIL = '/send-set-password-email/';
 
 export const GET_ALL_INSTITUTIONS = '/accounts/educational-institutions/';
 export const GET_ALL_PERMISSIONS = '/accounts/permissions/';
 
 export const GET_ALL_DEPARTMENTS = '/accounts/departments/';
+
+export const BASE_EMAIL_LOGS = '/accounts/email-logs/';
+export const RETRY_EMAIL_LOG = '/retry/';
