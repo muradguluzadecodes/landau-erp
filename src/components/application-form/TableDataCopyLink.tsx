@@ -1,10 +1,12 @@
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Copy } from 'lucide-react';
 import FloatInput from '../FloatInput';
 
 export default function TableDataCopyLink({
   setCopyLink,
+  slug,
 }: {
   setCopyLink: (value: boolean) => void;
+  slug: string;
 }) {
   return (
     <div className="p-4 border-t border-b border-[#DFDFDF] flex flex-col gap-5">
@@ -19,9 +21,13 @@ export default function TableDataCopyLink({
       <FloatInput
         type="text"
         label=""
-        value={'https://erp.leg.az/2025&92'}
+        value={`https://erp.leg.az/${slug}`}
         onChange={() => {}}
         containerClassName=""
+        rightIcon={<Copy size={20} />}
+        onRightIconClick={() => {
+          navigator.clipboard.writeText(`https://erp.leg.az/${slug}`);
+        }}
       />
     </div>
   );

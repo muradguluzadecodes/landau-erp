@@ -16,3 +16,9 @@ export const DEPARTMENTS = '/accounts/departments/';
 
 export const BASE_EMAIL_LOGS = '/accounts/email-logs/';
 export const RETRY_EMAIL_LOG = '/retry/';
+
+
+/*Müraciət formu*/
+export const APPLICATION_FORM_BASE = '/application/application-form/';
+
+
