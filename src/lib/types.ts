@@ -139,3 +139,18 @@ export type EmailLog = {
   created_at: string | null;
   updated_at: string | null;
 };
+
+export type ApplicationForm = {
+  id: number | null;
+  is_enabled: boolean | null;
+  module: {
+    name: string;
+  };
+  submodule:{
+    name: string;
+  };
+  academic_year:{
+    start_date:string
+  },
+  slug:string
+};

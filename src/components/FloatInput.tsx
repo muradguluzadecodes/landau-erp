@@ -3,7 +3,7 @@
 import { Input, Select } from 'antd';
 import clsx from 'clsx';
 import { Eye, EyeOff } from 'lucide-react';
-import { ChangeEventHandler, useState } from 'react';
+import { ChangeEventHandler, ReactNode, useState } from 'react';
 
 interface FloatInputProps {
   label: string;
@@ -20,6 +20,9 @@ interface FloatInputProps {
   errorMessage?: string | null;
   isError?: boolean;
   disabled?: boolean;
+  rightIcon?: ReactNode;
+  onRightIconClick?: () => void;
+  rightIconClassName?: string;
 }
 
 const FloatInput = ({
@@ -37,6 +40,9 @@ const FloatInput = ({
   isError = false,
   disabled = false,
   options = [],
+  rightIcon = null,
+  onRightIconClick,
+  rightIconClassName,
 }: FloatInputProps) => {
   const [focus, setFocus] = useState(false);
 
@@ -47,7 +53,7 @@ const FloatInput = ({
   const requiredMark = required ? <span className="text-error">*</span> : null;
 
   const sharedInputClasses = clsx(
-    'placeholder:text-black! outline-none! focus:outline-none! focus:shadow-none! shadow-none! peer w-full rounded-full! pl-6! py-[16.5px]! bg-transparent! text-black border border-input-border',
+    'placeholder:text-black! outline-none! focus:outline-none! focus:shadow-none! shadow-none! peer w-full rounded-full! pl-6! py-3! bg-transparent! text-black border border-input-border',
     inputClassName,
   );
 
@@ -63,7 +69,7 @@ const FloatInput = ({
 
   return (
     <div
-      className={clsx('float-label w-full', containerClassName)}
+      className={clsx('float-label w-full relative', containerClassName)}
       onFocus={() => setFocus(true)}
       onBlur={() => setFocus(false)}
     >
@@ -114,6 +120,20 @@ const FloatInput = ({
       <label className={clsx(labelClass, labelClassName)}>
         {isOccupied ? label : placeholder} {requiredMark}
       </label>
+
+      {rightIcon && (
+        <button
+          type="button"
+          onClick={onRightIconClick}
+          className={clsx(
+            'absolute right-4 top-1/2 -translate-y-1/2 flex items-center justify-center text-[#141414]',
+            disabled && 'opacity-60 cursor-not-allowed pointer-events-none',
+            rightIconClassName,
+          )}
+        >
+          {rightIcon}
+        </button>
+      )}
 
       {errorMessage && (
         <p

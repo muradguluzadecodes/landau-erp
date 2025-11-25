@@ -1,16 +1,27 @@
-'use client'
-import { Switch } from 'antd'
+'use client';
 
-function TableDataFooter() {
-    const onChange = (checked: boolean) => {
-        console.log(`switch to ${checked}`);
-      };
+import { useEffect, useState } from 'react';
+
+import { ApplicationForm } from '@/lib/types';
+import { Switch } from 'antd';
+
+function TableDataFooter({ is_enabled }: ApplicationForm) {
+  const [isActive, setIsActive] = useState<boolean>(Boolean(is_enabled));
+
+  useEffect(() => {
+    setIsActive(Boolean(is_enabled));
+  }, [is_enabled]);
+
+  const handleToggle = (checked: boolean) => {
+    setIsActive(checked);
+  };
+
   return (
-    <div className='flex items-center justify-between p-4'>
-      <h3 className='text-[12px] font-semibold text-[#141414]'>Aktiv</h3>
-      <Switch onChange={onChange} />
+    <div className="flex items-center justify-between p-4">
+      <h3 className="text-[12px] font-semibold text-[#141414]">Aktiv</h3>
+      <Switch onChange={handleToggle} checked={isActive} />
     </div>
-  )
+  );
 }
 
-export default TableDataFooter
+export default TableDataFooter;

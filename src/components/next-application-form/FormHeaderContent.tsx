@@ -1,7 +1,15 @@
+'use client';
+
 import { ArrowLeft, Plus } from 'lucide-react';
 import Link from 'next/link';
 
-export default function FormHeaderContent() {
+interface FormHeaderContentProps {
+  onAddPage?: () => void;
+}
+
+export default function FormHeaderContent({
+  onAddPage,
+}: FormHeaderContentProps) {
   return (
     <div className="flex items-end justify-between">
       <div className="flex justify-center flex-col gap-8">
@@ -17,7 +25,10 @@ export default function FormHeaderContent() {
           </p>
         </div>
       </div>
-      <button className="p-3 rounded-full bg-[#0044FF]">
+      <button
+        onClick={onAddPage}
+        className="p-3 rounded-full bg-[#0044FF] hover:bg-[#0033CC] transition-colors"
+      >
         <Plus size={24} color="white" />
       </button>
     </div>
