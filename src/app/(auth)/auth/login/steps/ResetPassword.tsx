@@ -28,7 +28,6 @@ export const ResetPassword = () => {
 
       <div className="mt-6 flex flex-col gap-4 items-center">
         <FloatInput
-          error="lorem"
           label="Email"
           placeholder="Email"
           type="text"

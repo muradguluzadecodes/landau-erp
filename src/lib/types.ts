@@ -154,3 +154,30 @@ export type ApplicationForm = {
   },
   slug:string
 };
+
+/*SETTINGS TYPE*/
+
+export type SettingItem = {
+  id: number;
+  name: string;
+  name_az: string;
+  name_en: string;
+  name_ru: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type SettingsVariants = 'positions' | 'institutions' | 'departments';
+export type SettingRowActions = 'update' | 'delete';
+
+export type SettingsEditRow = {
+  id: string | number;
+  names?: {
+    name: string;
+    name_az: string | null;
+    name_en: string | null;
+    name_ru: string | null;
+  };
+  action: SettingRowActions;
+} | null;
