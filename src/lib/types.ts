@@ -98,3 +98,27 @@ export interface UserItem {
 /*LANGUAGE */
 
 export type LanguageKey = keyof typeof LanguageEnum;
+
+/*EMAILS*/
+
+export type EmailLog = {
+  id: number | null;
+  key?: number | null;
+  to_email: string | null;
+  from_email: string | null;
+  subject: string | null;
+  email_type: string | null;
+  email_type_display: string | null;
+  is_succeeded: boolean | null;
+  error_message: string | null;
+  response_data: string | boolean | null | object | undefined | [];
+  retry_count: number | null;
+  last_retry_at: string | null;
+  task_id: string | null;
+  user: number | null;
+  user_email: string | null;
+  user_full_name: string | null;
+  username: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+};

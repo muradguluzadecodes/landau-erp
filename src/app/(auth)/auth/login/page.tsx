@@ -1,6 +1,6 @@
 'use client';
 
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -34,13 +34,20 @@ export default function Page() {
     }));
   };
 
+  const queryClient = useQueryClient();
+
   const {
     mutate,
     isPending,
     error: responseError,
   } = useMutation({
     mutationFn: (data: { email: string; password: string }) =>
-      login(data, () => router.replace('/users')),
+      login(data, () => {
+        router.replace('/users');
+        queryClient.invalidateQueries({
+          queryKey: ['user'],
+        });
+      }),
   });
 
   const handleSubmit = () => {

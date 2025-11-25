@@ -54,3 +54,11 @@ export function formatDate(dateStr: string) {
 
   return `${day}.${month}.${year} ${hours}:${minutes}`;
 }
+
+// THIS IS FOR EXCLUDING SETTER FUNCTIONS FROM FILTERS OBJECT TO SEND JUST NON-FUNCTION PROPERTIES AS PAYLOAD
+export const getOnlyFilters = (state: Record<string, any>) => {
+  return Object.fromEntries(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    Object.entries(state).filter(([_, value]) => typeof value !== 'function'),
+  );
+};

@@ -6,9 +6,27 @@ import { Settings } from '@/assets/icons/icons';
 import FloatInput from '@/components/FloatInput';
 import { MainBtn } from '@/components/MainBtn';
 import { CreateUserModal } from '@/components/Modals/CreateUserModal';
+import { useUserFilters } from '@/store/useUserFilters';
 
 export const Filters = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
+
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const { setFilter } = useUserFilters();
+
+  const handleSearch = () => {
+    if (fullName) {
+      setFilter('search', fullName);
+    }
+
+    if (email) {
+      setFilter('search', email);
+    }
+
+    setFilter('page', 1);
+  };
+
   return (
     <div className="flex justify-between items-center mb-6 w-full">
       <p className="text-[24px] font-bold">İstifadəçilər</p>
@@ -23,22 +41,25 @@ export const Filters = () => {
           placeholder="Ad soyad"
           containerClassName="w-[180px]!"
           type="text"
-          // value={values.email}
-          value={''}
-          // onChange={(e) => handleChangeValue(e, 'email')}
+          onChange={(e) => setFullName(e.target.value)}
+          value={fullName}
         />
         <FloatInput
           label="Email"
           placeholder="Email"
           containerClassName="w-[180px]!"
           type="text"
-          // value={values.email}
-          value={''}
-          // onChange={(e) => handleChangeValue(e, 'email')}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
 
         <MainBtn className="w-24 h-12" text="İxrac et" variant="outline" />
-        <MainBtn className="w-22 h-12" text="Axtar" variant="outline" />
+        <MainBtn
+          className="w-22 h-12"
+          text="Axtar"
+          variant="outline"
+          onClick={handleSearch}
+        />
 
         <MainBtn
           text={<Settings />}
