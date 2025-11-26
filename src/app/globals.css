@@ -11,6 +11,7 @@
   --gray-ff: #f0f5ff;
   --gray-ef: #efefef;
   --gray-ce: #cecece;
+  --green-06: #009906;
   --blue-ff: #e7edff;
   --blue-fd: #1f5afd;
   --red-00: #c50000;
@@ -28,6 +29,7 @@
   --color-section-bg: var(--white-fc);
   --color-subSection-bg: var(--white-f7);
   --color-border: var(--white-e7);
+  --color-success: var(--green-06);
   --color-primary-light: var(--blue-ff);
   --color-gray-ef: var(--gray-ef);
   --color-gray-55: var(--gray-55);

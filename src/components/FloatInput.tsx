@@ -47,7 +47,7 @@ const FloatInput = ({
   const requiredMark = required ? <span className="text-error">*</span> : null;
 
   const sharedInputClasses = clsx(
-    'placeholder:text-black! outline-none! focus:outline-none! focus:shadow-none! shadow-none! peer w-full rounded-full! pl-6! py-[16.5px]! bg-transparent! text-black border border-input-border',
+    'placeholder:text-black! outline-none! focus:outline-none! focus:shadow-none! shadow-none! peer w-full rounded-full! pl-6! py-3! bg-transparent! text-black border border-input-border',
     inputClassName,
   );
 

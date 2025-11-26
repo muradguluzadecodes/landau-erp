@@ -7,10 +7,12 @@ export const GET_USER = '/me';
 export const CHANGE_USER_PASSWORD = '/change-password/';
 export const USER_SEND_EMAIL = '/send-set-password-email/';
 
-export const GET_ALL_INSTITUTIONS = '/accounts/educational-institutions/';
-export const GET_ALL_PERMISSIONS = '/accounts/permissions/';
+export const INSTITUTIONS = '/accounts/educational-institutions/';
+export const PERMISSIONS = '/accounts/permissions/';
 
-export const GET_ALL_DEPARTMENTS = '/accounts/departments/';
+export const POSITIONS = '/accounts/positions/';
+
+export const DEPARTMENTS = '/accounts/departments/';
 
 export const BASE_EMAIL_LOGS = '/accounts/email-logs/';
 export const RETRY_EMAIL_LOG = '/retry/';

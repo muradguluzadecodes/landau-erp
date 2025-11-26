@@ -1,12 +1,12 @@
 import { toast } from 'react-toastify';
 
 import api from '@/lib/axios';
-import { DEPARTMENTS } from '@/lib/endpoints';
+import { POSITIONS } from '@/lib/endpoints';
 import { INTERNAL_SERVER } from '@/lib/errors';
 
-export async function getAllDepartments() {
+export async function getAllPositions() {
   try {
-    const res = await api.get(DEPARTMENTS);
+    const res = await api.get(POSITIONS);
 
     return res.data;
   } catch (err: any) {

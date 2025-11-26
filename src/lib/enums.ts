@@ -3,3 +3,9 @@ export enum LanguageEnum {
   en = 'English',
   ru = 'Русский',
 }
+
+export enum SettingsEnum {
+  positions = 'Vəzifə',
+  departments = 'Departament',
+  institutions = 'Təhsil müəssisəsi',
+}
