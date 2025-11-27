@@ -1,28 +1,40 @@
 'use client';
 import TechnicalInfoRulesModal from '@/components/Modals/TechnicalInfoRulesModal';
-import FormHeaderContent from '@/components/new-application-form/FormHeaderContent';
-import TechnicalInfo from '@/components/new-application-form/TechnicalInfo';
 import { useState } from 'react';
+import TechnicalInfo from '../shared/components/TechnicalInfo';
+import FormHeaderContent from '../shared/components/FormHeaderContent';
+import { MainBtn } from '@/components/MainBtn';
+import { useRouter } from 'next/navigation';
+import BannerDeleteModal from '@/components/Modals/BannerDeleteModal';
 
 export default function Page() {
+  const router = useRouter();
   const [isOpenTechnicalInfoRulesModal, setIsOpenTechnicalInfoRulesModal] =
     useState(false);
+  const [isOpenBannerDeleteModal, setIsOpenBannerDeleteModal] = useState(false);
   return (
     <>
       <TechnicalInfoRulesModal
         isOpenModal={isOpenTechnicalInfoRulesModal}
         setIsOpenModal={setIsOpenTechnicalInfoRulesModal}
       />
+      <BannerDeleteModal
+        isOpenModal={isOpenBannerDeleteModal}
+        setIsOpenModal={setIsOpenBannerDeleteModal}
+      />
 
       <div className="relative border border-border bg-section-bg w-full rounded-[20px] p-10 flex flex-col gap-8">
         <FormHeaderContent />
         <TechnicalInfo
           openTechnicalInfoRulesModal={setIsOpenTechnicalInfoRulesModal}
+          openBannerDeleteModal={setIsOpenBannerDeleteModal}
         />
         <div className="flex justify-end">
-          <button className="bg-[#0044FF] text-white text-[16px] font-regular py-4 rounded-[100px] w-[30%]">
-            Növbəti
-          </button>
+          <MainBtn
+            text="Növbəti"
+            className="py-4 px-32"
+            onClick={() => router.push('/application-form/create')}
+          />
         </div>
       </div>
     </>

@@ -1,0 +1,50 @@
+'use client';
+import TechnicalInfoRulesModal from '@/components/Modals/TechnicalInfoRulesModal';
+import { useState } from 'react';
+import TechnicalInfo from '../../shared/components/TechnicalInfo';
+import FormHeaderContent from '../../shared/components/FormHeaderContent';
+import { MainBtn } from '@/components/MainBtn';
+import { useRouter, useParams } from 'next/navigation';
+import BannerDeleteModal from '@/components/Modals/BannerDeleteModal';
+
+export default function Page() {
+  const router = useRouter();
+  const params = useParams();
+  const formId = params.id as string;
+  const [isOpenTechnicalInfoRulesModal, setIsOpenTechnicalInfoRulesModal] =
+    useState(false);
+  const [isOpenBannerDeleteModal, setIsOpenBannerDeleteModal] = useState(false);
+
+  return (
+    <>
+      <TechnicalInfoRulesModal
+        isOpenModal={isOpenTechnicalInfoRulesModal}
+        setIsOpenModal={setIsOpenTechnicalInfoRulesModal}
+      />
+      <BannerDeleteModal
+        isOpenModal={isOpenBannerDeleteModal}
+        setIsOpenModal={setIsOpenBannerDeleteModal}
+      />
+
+      <div className="relative border border-border bg-section-bg w-full rounded-[20px] p-10 flex flex-col gap-8">
+        <FormHeaderContent
+          backHref="/application-form"
+          isEditMode={true}
+        />
+        <TechnicalInfo
+          openTechnicalInfoRulesModal={setIsOpenTechnicalInfoRulesModal}
+          openBannerDeleteModal={setIsOpenBannerDeleteModal}
+          formId={formId}
+        />
+        <div className="flex justify-end">
+          <MainBtn
+            text="Növbəti"
+            className="py-4 px-32"
+            onClick={() => router.push(`/application-form/create/${formId}`)}
+          />
+        </div>
+      </div>
+    </>
+  );
+}
+

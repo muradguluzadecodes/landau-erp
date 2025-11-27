@@ -1,5 +1,6 @@
-import ApplicationFormHead from "@/components/application-form/ApplicationFormHead";
-import ApplicationFormTable from "@/components/application-form/ApplicationFormTable";
+'use client';
+import ApplicationFormHead from './components/ApplicationFormHead';
+import ApplicationFormTable from './components/ApplicationFormTable';
 
 export default function Page() {
   return (
