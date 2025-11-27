@@ -1,26 +1,22 @@
 'use client';
 
-import { type ChangeEvent, useState } from 'react';
 import { Pencil } from 'lucide-react';
+import { type ChangeEvent, useState } from 'react';
 
-import { UploadCloud } from '@/assets/icons/icons';
+import BannerPreviewCard from './BannerPreviewCard';
+import FloatInput from '@/components/FloatInput';
 import {
   NEW_APPLICATION_FORM_CONFIRMATION_TEXTS,
   NEW_APPLICATION_FORM_RULES,
   NEW_APPLICATION_FORM_TECHNICAL_INFO,
 } from '@/constants/newApplicationForm';
-import FloatInput from '@/components/FloatInput';
-import BannerUploadPlaceholder from './BannerUploadPlaceholder';
-import BannerPreviewCard from './BannerPreviewCard';
 
 export default function TechnicalInfo({
   openTechnicalInfoRulesModal,
   openBannerDeleteModal,
-  formId,
 }: {
   openTechnicalInfoRulesModal: (value: boolean) => void;
   openBannerDeleteModal: (value: boolean) => void;
-  formId?: string;
 }) {
   const [formData, setFormData] = useState<Record<string, string>>(() =>
     Object.fromEntries(
@@ -101,4 +97,3 @@ export default function TechnicalInfo({
     </div>
   );
 }
-

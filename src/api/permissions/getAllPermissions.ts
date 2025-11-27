@@ -15,5 +15,6 @@ export async function getAllPermissions() {
     }
 
     toast.error(INTERNAL_SERVER);
+    throw err;
   }
 }

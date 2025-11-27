@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 
 import api from '@/lib/axios';
-import { BASE_EMAIL_LOGS } from '@/lib/endpoints';
+import { EMAIL_LOGS_BASE } from '@/lib/endpoints';
 import { INTERNAL_SERVER } from '@/lib/errors';
 
 export async function getEmailLogs(params: {
@@ -10,7 +10,7 @@ export async function getEmailLogs(params: {
   is_succeeded?: boolean;
 }) {
   try {
-    const res = await api.get(BASE_EMAIL_LOGS, { params });
+    const res = await api.get(EMAIL_LOGS_BASE, { params });
     return res.data;
   } catch (err: any) {
     toast.error(INTERNAL_SERVER);

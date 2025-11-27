@@ -1,8 +1,6 @@
 'use client';
 
 import { Modal } from 'antd';
-import { useState } from 'react';
-import type { Descendant } from 'slate';
 
 import { MainBtn } from '../MainBtn';
 import { RichTextEditor } from '@/widgets/richText/RichTextEditor';
@@ -16,7 +14,9 @@ export default function TechnicalInfoRulesModal({
   isOpenModal,
   setIsOpenModal,
 }: TechnicalInfoRulesModalProps) {
-  const [, setRulesValue] = useState<Descendant[]>();
+  const handleRulesChange = () => {
+    // TODO: persist rules value once API is ready
+  };
 
   return (
     <Modal
@@ -32,7 +32,7 @@ export default function TechnicalInfoRulesModal({
             Aşağı xanaya qaydaları (Azərbaycanca) əlavə edin.
           </p>
         </div>
-        <RichTextEditor onValueChange={setRulesValue} />
+        <RichTextEditor onValueChange={handleRulesChange} />
         <div className="flex gap-4">
           <MainBtn
             variant="outline"

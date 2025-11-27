@@ -24,8 +24,6 @@ export const ChangeContactModal = ({
     email,
   });
 
-  console.log('VALUEs', values);
-
   const [error, setError] = useState('');
 
   const handleChange = (

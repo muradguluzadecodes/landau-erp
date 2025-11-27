@@ -15,5 +15,6 @@ export async function getAllDepartments() {
     }
 
     toast.error(INTERNAL_SERVER);
+    throw err;
   }
 }

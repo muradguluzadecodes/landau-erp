@@ -1,4 +1,10 @@
-import { CreateUserErrors, CreateUserFormValues } from './types';
+import {
+  CreateUserErrors,
+  CreateUserFormValues,
+  Directories,
+  DirectoryItem,
+  DirectoryVariants,
+} from './types';
 
 export const validateEmail = (email: string) => {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -61,4 +67,37 @@ export const getOnlyFilters = (state: Record<string, any>) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     Object.entries(state).filter(([_, value]) => typeof value !== 'function'),
   );
+};
+
+//TODO: Gelecekde bax gor reusable etmek olsa, yeni item.name her bir selectde varsa refactor et
+export const getDirectoryOptionsForSelect = (directory: DirectoryItem[]) => {
+  return directory?.map((item: DirectoryItem) => {
+    return {
+      value: `${item.id}`,
+      label: item.name,
+    };
+  });
+};
+
+export const getDirectorySelectValue = (
+  value: number | string | DirectoryItem,
+  directories: Directories,
+  variant?: DirectoryVariants,
+) => {
+  if (typeof value === 'number') {
+    const directory =
+      (variant === 'positions' && directories?.positions) ||
+      (variant === 'departments' && directories?.departments) ||
+      directories?.institutions;
+
+    return (
+      directory?.find((item: DirectoryItem) => item.id === value)?.name || ''
+    );
+  }
+
+  if (typeof value === 'object' && value !== null) {
+    return value.name || '';
+  }
+
+  return value;
 };

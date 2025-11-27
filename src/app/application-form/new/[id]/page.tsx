@@ -1,11 +1,12 @@
 'use client';
-import TechnicalInfoRulesModal from '@/components/Modals/TechnicalInfoRulesModal';
-import { useState } from 'react';
-import TechnicalInfo from '../../shared/components/TechnicalInfo';
-import FormHeaderContent from '../../shared/components/FormHeaderContent';
-import { MainBtn } from '@/components/MainBtn';
 import { useRouter, useParams } from 'next/navigation';
+import { useState } from 'react';
+
+import FormHeaderContent from '../../shared/components/FormHeaderContent';
+import TechnicalInfo from '../../shared/components/TechnicalInfo';
+import { MainBtn } from '@/components/MainBtn';
 import BannerDeleteModal from '@/components/Modals/BannerDeleteModal';
+import TechnicalInfoRulesModal from '@/components/Modals/TechnicalInfoRulesModal';
 
 export default function Page() {
   const router = useRouter();
@@ -27,14 +28,10 @@ export default function Page() {
       />
 
       <div className="relative border border-border bg-section-bg w-full rounded-[20px] p-10 flex flex-col gap-8">
-        <FormHeaderContent
-          backHref="/application-form"
-          isEditMode={true}
-        />
+        <FormHeaderContent backHref="/application-form" isEditMode={true} />
         <TechnicalInfo
           openTechnicalInfoRulesModal={setIsOpenTechnicalInfoRulesModal}
           openBannerDeleteModal={setIsOpenBannerDeleteModal}
-          formId={formId}
         />
         <div className="flex justify-end">
           <MainBtn
@@ -47,4 +44,3 @@ export default function Page() {
     </>
   );
 }
-

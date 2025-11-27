@@ -1,5 +1,26 @@
 import { LanguageEnum } from './enums';
 
+/*FOR USER INTITUTION, DEPARTMENTS, POSITION */
+export type DirectoryItem = {
+  id: number;
+  name: string;
+  name_az: string;
+  name_en: string | null;
+  name_ru: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type DirectoryVariants = 'positions' | 'institutions' | 'departments';
+
+export type Directories = {
+  positions: DirectoryItem[];
+  departments: DirectoryItem[];
+  institutions: DirectoryItem[];
+};
+
+export type InstitutionList = DirectoryItem[];
+
 export interface CreateUserFormValues {
   email: string | null;
   first_name: string | null;
@@ -7,14 +28,26 @@ export interface CreateUserFormValues {
   father_name: string | null;
   username: string | null;
   mobile_number: string | null;
-  educational_institution: string | number | null;
-  position: string | null;
-  department: string | number | null;
-  language: string | number | null;
-  custom_permission_id: string | number | null;
+  educational_institution: string;
+  position: string;
+  department: string;
+  language: string;
+  custom_permission_id: string | null;
 }
 
-export type UpdateUser = CreateUserFormValues;
+export type UpdateUser = {
+  email: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  father_name: string | null;
+  username: string | null;
+  mobile_number: string | null;
+  educational_institution: string | number;
+  position: string | number;
+  department: string | number;
+  language: string;
+  custom_permission_id: string | number | null;
+};
 
 export interface CreateUserErrors {
   email: string;
@@ -39,20 +72,6 @@ export type UserTableRow = {
   role: string;
   status: string;
 };
-
-/*INSTITUTION */
-
-export interface Institution {
-  id: number;
-  name: string;
-  name_az: string;
-  name_en: string;
-  name_ru: string;
-  created_at: string;
-  updated_at: string;
-}
-
-export type InstitutionList = Institution[];
 
 /*USERS*/
 
@@ -146,13 +165,13 @@ export type ApplicationForm = {
   module: {
     name: string;
   };
-  submodule:{
+  submodule: {
     name: string;
   };
-  academic_year:{
-    start_date:string
-  },
-  slug:string
+  academic_year: {
+    start_date: string;
+  };
+  slug: string;
 };
 
 /*SETTINGS TYPE*/
@@ -168,7 +187,7 @@ export type SettingItem = {
   updated_at: string;
 };
 
-export type SettingsVariants = 'positions' | 'institutions' | 'departments';
+export type SettingsVariants = DirectoryVariants;
 export type SettingRowActions = 'update' | 'delete';
 
 export type SettingsEditRow = {
