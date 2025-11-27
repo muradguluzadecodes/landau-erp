@@ -68,8 +68,6 @@ export default function Page() {
     }
   }, [user]);
 
-  console.log('userData', userData);
-
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [isOpenChangePasswordModal, setIsOpenChangePasswordModal] =
     useState(false);

@@ -74,3 +74,4 @@ export default function NewPage({ pageNumber, onDelete }: NewPageProps) {
     </div>
   );
 }
+

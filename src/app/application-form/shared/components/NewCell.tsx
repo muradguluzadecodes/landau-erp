@@ -1,9 +1,8 @@
 'use client';
 
+import FloatInput from '@/components/FloatInput';
 import { Checkbox } from 'antd';
 import { ChangeEvent, useState } from 'react';
-
-import FloatInput from '../FloatInput';
 
 export default function NewCell() {
   const [formData, setFormData] = useState({
@@ -101,3 +100,4 @@ export default function NewCell() {
     </div>
   );
 }
+

@@ -21,7 +21,6 @@ export async function updateUserInfo({
   func?: () => void;
 }) {
   try {
-    console.log('UPDATE DATA');
     await api.put(`${USER_BASE}/${id}/`, data);
 
     toast.success('Məlumatlar uğurla yeniləndi');
