@@ -1,9 +1,9 @@
 'use client';
 
+import { Switch } from 'antd';
 import { useEffect, useState } from 'react';
 
 import { ApplicationForm } from '@/lib/types';
-import { Switch } from 'antd';
 
 function TableDataFooter({ is_enabled }: ApplicationForm) {
   const [isActive, setIsActive] = useState<boolean>(Boolean(is_enabled));

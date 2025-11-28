@@ -1,8 +1,6 @@
 import { Link, Pencil, Trash2 } from 'lucide-react';
-import { useState } from 'react';
 
 const TableDataHeader = ({
-  copyLink,
   setCopyLink,
 }: {
   copyLink: boolean;

@@ -1,9 +1,10 @@
 'use client';
 import { useState } from 'react';
+
+import TableDataCopyLink from './TableDataCopyLink';
+import TableDataFooter from './TableDataFooter';
 import TableDataHeader from './TableDataHeader';
 import TableDataMain from './TableDataMain';
-import TableDataFooter from './TableDataFooter';
-import TableDataCopyLink from './TableDataCopyLink';
 import { ApplicationForm } from '@/lib/types';
 
 export default function ApplicationFormTableData(props: ApplicationForm) {

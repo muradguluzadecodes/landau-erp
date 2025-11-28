@@ -3,6 +3,7 @@
 import { Checkbox } from 'antd';
 import { Plus, Trash2 } from 'lucide-react';
 import { useState } from 'react';
+
 import NewCell from './NewCell';
 
 interface NewPageProps {
@@ -10,7 +11,7 @@ interface NewPageProps {
   onDelete?: () => void;
 }
 
-export default function NewPage({ pageNumber, onDelete }: NewPageProps) {
+export default function NewPage({ pageNumber }: NewPageProps) {
   const [incompleteLead, setIncompleteLead] = useState(false);
   const [cells, setCells] = useState([{ id: 1 }]);
 

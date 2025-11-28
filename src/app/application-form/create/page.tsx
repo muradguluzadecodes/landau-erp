@@ -1,11 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import FormHeaderContent from '@/components/next-application-form/FormHeaderContent';
-import NewPage from '@/components/next-application-form/NewPage';
-import NoInfo from '@/components/next-application-form/NoInfo';
 
-export default function page() {
+import FormHeaderContent from '../shared/components/FormHeaderContent';
+import NewPage from '../shared/components/NewPage';
+import NoInfo from '../shared/components/NoInfo';
+import { MainBtn } from '@/components/MainBtn';
+
+export default function Page() {
   const [pages, setPages] = useState<{ id: number; pageNumber: number }[]>([]);
 
   const handleAddPage = () => {
@@ -45,9 +47,7 @@ export default function page() {
       )}
       {pages.length > 0 && (
         <div className="flex justify-end">
-          <button className="bg-[#0044FF] text-white text-[16px] font-regular py-4 rounded-[100px] w-[30%]">
-            Yarat
-          </button>
+          <MainBtn text="Yarat" className="py-4 px-32" onClick={() => {}} />
         </div>
       )}
     </div>

@@ -3,8 +3,8 @@
 import { Pencil } from 'lucide-react';
 import { type ChangeEvent, useState } from 'react';
 
-import FloatInput from '../FloatInput';
-import { UploadCloud } from '@/assets/icons/icons';
+import BannerPreviewCard from './BannerPreviewCard';
+import FloatInput from '@/components/FloatInput';
 import {
   NEW_APPLICATION_FORM_CONFIRMATION_TEXTS,
   NEW_APPLICATION_FORM_RULES,
@@ -13,8 +13,10 @@ import {
 
 export default function TechnicalInfo({
   openTechnicalInfoRulesModal,
+  openBannerDeleteModal,
 }: {
   openTechnicalInfoRulesModal: (value: boolean) => void;
+  openBannerDeleteModal: (value: boolean) => void;
 }) {
   const [formData, setFormData] = useState<Record<string, string>>(() =>
     Object.fromEntries(
@@ -76,24 +78,8 @@ export default function TechnicalInfo({
               </span>
             </div>
           ))}
-          <div className="border border-[#909090] border-dashed rounded-[24px] py-8 px-5">
-            <div className="flex flex-col items-center justify-center">
-              <UploadCloud />
-              <div className="flex flex-col gap-3 items-center">
-                <p className="text-[14px] font-regular text-[#141414]">
-                  Banner <span className="text-error">*</span>
-                </p>
-                <div className="flex flex-col gap-1">
-                  <p className="text-[14px] font-medium text-[#141414]">
-                    Faylı seçin və ya sürüşdürüb buraxın
-                  </p>
-                  <p className="text-[14px] font-regular text-[#555555]">
-                    Suppported formats: JPEG (750x200)
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+          {/* <BannerUploadPlaceholder/> */}
+          <BannerPreviewCard openBannerDeleteModal={openBannerDeleteModal} />
         </div>
       </div>
       <div className="grid grid-cols-3 gap-4">

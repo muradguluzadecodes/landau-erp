@@ -1,5 +1,6 @@
 import { ArrowLeft, Copy } from 'lucide-react';
-import FloatInput from '../FloatInput';
+
+import FloatInput from '@/components/FloatInput';
 
 export default function TableDataCopyLink({
   setCopyLink,

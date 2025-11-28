@@ -52,8 +52,6 @@ export const CreateUserModal = ({
     ...initialErrors,
   });
 
-  console.log('CREATE USER VALUES', values);
-
   const queryClient = useQueryClient();
 
   const { directories } = useDirectories();
@@ -75,7 +73,6 @@ export const CreateUserModal = ({
     val: string | number,
     key: keyof typeof values,
   ) => {
-    console.log('HANDLE SELECT CHANGE', val, key);
     setValues((prev) => ({
       ...prev,
       [key]: val,
