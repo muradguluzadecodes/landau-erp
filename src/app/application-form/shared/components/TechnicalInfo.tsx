@@ -1,7 +1,8 @@
 'use client';
 
 import { Pencil } from 'lucide-react';
-import { type ChangeEvent, useState } from 'react';
+import { useEffect, useRef } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 
 import BannerPreviewCard from './BannerPreviewCard';
 import FloatInput from '@/components/FloatInput';
@@ -10,33 +11,68 @@ import {
   NEW_APPLICATION_FORM_RULES,
   NEW_APPLICATION_FORM_TECHNICAL_INFO,
 } from '@/constants/newApplicationForm';
+import {
+  useApplicationFormStore,
+  type TechnicalInfoFormData,
+} from '@/store/useApplicationFormStore';
 
 export default function TechnicalInfo({
   openTechnicalInfoRulesModal,
   openBannerDeleteModal,
 }: {
-  openTechnicalInfoRulesModal: (value: boolean) => void;
+  openTechnicalInfoRulesModal: (
+    value: boolean,
+    ruleKey?: 'rules_text_az' | 'rules_text_ru' | 'rules_text_en',
+  ) => void;
   openBannerDeleteModal: (value: boolean) => void;
 }) {
-  const [formData, setFormData] = useState<Record<string, string>>(() =>
-    Object.fromEntries(
-      [
-        ...NEW_APPLICATION_FORM_TECHNICAL_INFO,
-        ...NEW_APPLICATION_FORM_CONFIRMATION_TEXTS,
-        ...NEW_APPLICATION_FORM_RULES,
-      ].map((item) => [item.key, '']),
-    ),
-  );
+  const { technicalInfo, setTechnicalInfoField, isInitialized } =
+    useApplicationFormStore();
+  const isInitialMount = useRef(true);
 
-  const handleInputChange =
-    (key: string) =>
-    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
-      setFormData((prev) => ({ ...prev, [key]: event.target.value }));
-    };
+  const { control, watch, reset } = useForm<TechnicalInfoFormData>({
+    defaultValues: technicalInfo,
+    mode: 'onChange',
+  });
 
-  const handleSelectChange = (key: string) => (value: string) => {
-    setFormData((prev) => ({ ...prev, [key]: value }));
-  };
+  // Watch all form values and sync with store
+  const formValues = watch();
+
+  // Initialize form when store data is loaded from API (only once)
+  useEffect(() => {
+    if (isInitialized && isInitialMount.current) {
+      reset(technicalInfo);
+      isInitialMount.current = false;
+    }
+  }, [isInitialized, technicalInfo, reset]);
+
+  // Sync form values to store whenever user types (debounced to avoid excessive updates)
+  useEffect(() => {
+    if (isInitialMount.current) return; // Skip on initial mount
+
+    const timeoutId = setTimeout(() => {
+      // Only sync string fields (exclude objects, numbers, booleans)
+      const stringFields = [
+        ...NEW_APPLICATION_FORM_TECHNICAL_INFO.map((item) => item.key),
+        ...NEW_APPLICATION_FORM_CONFIRMATION_TEXTS.map((item) => item.key),
+        ...NEW_APPLICATION_FORM_RULES.map((item) => item.key),
+      ] as (keyof TechnicalInfoFormData)[];
+
+      stringFields.forEach((key) => {
+        const value = formValues[key];
+        const storeValue = technicalInfo[key];
+        if (
+          value !== storeValue &&
+          value !== undefined &&
+          typeof value === 'string'
+        ) {
+          setTechnicalInfoField(key, value || '');
+        }
+      });
+    }, 300); // Debounce by 300ms
+
+    return () => clearTimeout(timeoutId);
+  }, [formValues, technicalInfo, setTechnicalInfoField]);
 
   return (
     <div className="bg-[#f7f7f7] rounded-[16px] overflow-hidden p-8">
@@ -45,19 +81,72 @@ export default function TechnicalInfo({
       </h3>
       <div className="grid grid-cols-3 gap-4 mb-6">
         {NEW_APPLICATION_FORM_TECHNICAL_INFO.map((item) => (
-          <FloatInput
+          <Controller
             key={item.key}
-            label={item.label}
-            type={item.type}
-            required={item.required}
-            value={formData[item.key]}
-            onChange={
-              item.type === 'select' ? undefined : handleInputChange(item.key)
-            }
-            onSelectChange={
-              item.type === 'select' ? handleSelectChange(item.key) : undefined
-            }
-            options={item.options}
+            name={item.key as keyof TechnicalInfoFormData}
+            control={control}
+            rules={{
+              required: item.required
+                ? `${item.label} mütləq doldurulmalıdır`
+                : false,
+            }}
+            render={({ field, fieldState }) => {
+              // Handle object fields (module, submodule, academic_year, responsible_person)
+              const isObjectField = [
+                'module',
+                'submodule',
+                'academic_year',
+                'responsible_person',
+              ].includes(item.key);
+              let displayValue = '';
+
+              if (typeof field.value === 'string') {
+                displayValue = field.value;
+              } else if (field.value && typeof field.value === 'object') {
+                // For module, submodule, academic_year, responsible_person
+                if ('name' in field.value) {
+                  displayValue = (field.value as { name?: string }).name || '';
+                } else if ('start_date' in field.value) {
+                  displayValue =
+                    (field.value as { start_date?: string }).start_date || '';
+                } else if ('username' in field.value) {
+                  displayValue =
+                    (field.value as { username?: string }).username || '';
+                }
+              }
+
+              return (
+                <FloatInput
+                  label={item.label}
+                  type={item.type}
+                  required={item.required}
+                  value={displayValue}
+                  onChange={
+                    item.type === 'select' || isObjectField
+                      ? undefined
+                      : (e) => {
+                          const value = e.target.value;
+                          if (typeof value === 'string') {
+                            field.onChange(value);
+                          }
+                        }
+                  }
+                  onSelectChange={
+                    item.type === 'select'
+                      ? (value) => {
+                          if (typeof value === 'string') {
+                            field.onChange(value);
+                          }
+                        }
+                      : undefined
+                  }
+                  options={item.options}
+                  errorMessage={fieldState.error?.message}
+                  isError={!!fieldState.error}
+                  disabled={isObjectField} // Disable object fields as they come from API
+                />
+              );
+            }}
           />
         ))}
       </div>
@@ -68,7 +157,15 @@ export default function TechnicalInfo({
             <div
               key={item.key}
               className="relative rounded-[24px] h-[200px] py-4 px-5 border border-[#CECECE]"
-              onClick={() => openTechnicalInfoRulesModal(true)}
+              onClick={() =>
+                openTechnicalInfoRulesModal(
+                  true,
+                  item.key as
+                    | 'rules_text_az'
+                    | 'rules_text_ru'
+                    | 'rules_text_en',
+                )
+              }
             >
               <p className="text-[14px] font-regular text-[#141414]">
                 {item.label}
@@ -84,13 +181,28 @@ export default function TechnicalInfo({
       </div>
       <div className="grid grid-cols-3 gap-4">
         {NEW_APPLICATION_FORM_CONFIRMATION_TEXTS.map((item) => (
-          <FloatInput
+          <Controller
             key={item.key}
-            label={item.label}
-            type={item.type}
-            required={item.required}
-            value={formData[item.key]}
-            onChange={handleInputChange(item.key)}
+            name={item.key as keyof TechnicalInfoFormData}
+            control={control}
+            rules={{
+              required: item.required
+                ? `${item.label} mütləq doldurulmalıdır`
+                : false,
+            }}
+            render={({ field, fieldState }) => (
+              <FloatInput
+                label={item.label}
+                type={item.type}
+                required={item.required}
+                value={
+                  (typeof field.value === 'string' ? field.value : '') || ''
+                }
+                onChange={(e) => field.onChange(e.target.value)}
+                errorMessage={fieldState.error?.message}
+                isError={!!fieldState.error}
+              />
+            )}
           />
         ))}
       </div>

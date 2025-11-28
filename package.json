@@ -25,6 +25,7 @@
     "next": "16.0.3",
     "react": "19.2.0",
     "react-dom": "19.2.0",
+    "react-hook-form": "^7.66.1",
     "react-toastify": "^11.0.5",
     "slate": "^0.115.0",
     "slate-history": "^0.115.0",
