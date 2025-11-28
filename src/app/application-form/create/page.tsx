@@ -39,6 +39,7 @@ export default function Page() {
           {pages.map((page) => (
             <NewPage
               key={page.id}
+              pageId={page.id}
               pageNumber={page.pageNumber}
               onDelete={() => handleDeletePage(page.id)}
             />

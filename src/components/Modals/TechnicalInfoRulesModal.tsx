@@ -1,21 +1,59 @@
 'use client';
 
 import { Modal } from 'antd';
+import { useEffect, useState } from 'react';
 
 import { MainBtn } from '../MainBtn';
+import { useApplicationFormStore } from '@/store/useApplicationFormStore';
 import { RichTextEditor } from '@/widgets/richText/RichTextEditor';
+
+import type { RichTextValue } from '@/widgets/richText/types';
 
 type TechnicalInfoRulesModalProps = {
   isOpenModal: boolean;
   setIsOpenModal: (value: boolean) => void;
+  ruleKey?: 'rules_text_az' | 'rules_text_ru' | 'rules_text_en';
 };
 
 export default function TechnicalInfoRulesModal({
   isOpenModal,
   setIsOpenModal,
+  ruleKey = 'rules_text_az',
 }: TechnicalInfoRulesModalProps) {
-  const handleRulesChange = () => {
-    // TODO: persist rules value once API is ready
+  const { technicalInfo, setTechnicalInfoField } = useApplicationFormStore();
+  const [currentValue, setCurrentValue] = useState<RichTextValue | undefined>(
+    undefined,
+  );
+
+  // Update current value when modal opens or ruleKey changes
+  useEffect(() => {
+    if (isOpenModal) {
+      // Try to parse stored value if it exists, otherwise use default
+      const storedValue = technicalInfo[ruleKey];
+      if (storedValue && typeof storedValue === 'string') {
+        try {
+          const parsed = JSON.parse(storedValue) as RichTextValue;
+          setCurrentValue(parsed);
+        } catch {
+          // If parsing fails, use default
+          setCurrentValue(undefined);
+        }
+      } else {
+        setCurrentValue(undefined);
+      }
+    }
+  }, [isOpenModal, ruleKey, technicalInfo]);
+
+  const handleRulesChange = (value: RichTextValue) => {
+    setCurrentValue(value);
+  };
+
+  const handleSave = () => {
+    if (currentValue) {
+      // Store as JSON string
+      setTechnicalInfoField(ruleKey, JSON.stringify(currentValue));
+    }
+    setIsOpenModal(false);
   };
 
   return (
@@ -32,7 +70,10 @@ export default function TechnicalInfoRulesModal({
             Aşağı xanaya qaydaları (Azərbaycanca) əlavə edin.
           </p>
         </div>
-        <RichTextEditor onValueChange={handleRulesChange} />
+        <RichTextEditor
+          onValueChange={handleRulesChange}
+          initialValue={currentValue}
+        />
         <div className="flex gap-4">
           <MainBtn
             variant="outline"
@@ -40,7 +81,7 @@ export default function TechnicalInfoRulesModal({
             className="w-full"
             onClick={() => setIsOpenModal(false)}
           />
-          <MainBtn className="w-full" text="Yadda saxla" />
+          <MainBtn className="w-full" text="Yadda saxla" onClick={handleSave} />
         </div>
       </div>
     </Modal>

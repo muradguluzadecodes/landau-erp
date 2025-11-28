@@ -1,35 +1,36 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect } from 'react';
 
 import FormHeaderContent from '../../shared/components/FormHeaderContent';
 import NewPage from '../../shared/components/NewPage';
 import NoInfo from '../../shared/components/NoInfo';
 import { MainBtn } from '@/components/MainBtn';
+import { useApplicationFormStore } from '@/store/useApplicationFormStore';
 
 export default function Page() {
   const params = useParams();
   const formId = params.id as string;
-  const [pages, setPages] = useState<{ id: number; pageNumber: number }[]>([]);
+  const { pages, addPage, deletePage, setFormId } = useApplicationFormStore();
+
+  // Initialize form ID in store
+  useEffect(() => {
+    setFormId(formId);
+  }, [formId, setFormId]);
 
   const handleAddPage = () => {
-    const newPageNumber = pages.length + 1;
-    setPages((prev) => [
-      ...prev,
-      { id: Date.now(), pageNumber: newPageNumber },
-    ]);
+    addPage();
   };
 
-  const handleDeletePage = (pageId: number) => {
-    setPages((prev) => {
-      const filtered = prev.filter((page) => page.id !== pageId);
-      // Səhifə nömrələrini yenidən təyin et
-      return filtered.map((page, index) => ({
-        ...page,
-        pageNumber: index + 1,
-      }));
-    });
+  const handleDeletePage = (pageId: string | number) => {
+    deletePage(pageId);
+  };
+
+  const handleSubmit = () => {
+    // TODO: Submit form data to API
+    // After successful submit, clear storage
+    // clearStorage();
   };
 
   return (
@@ -46,7 +47,8 @@ export default function Page() {
           {pages.map((page) => (
             <NewPage
               key={page.id}
-              pageNumber={page.pageNumber}
+              pageId={page.id}
+              pageNumber={page.order}
               onDelete={() => handleDeletePage(page.id)}
             />
           ))}
@@ -57,9 +59,7 @@ export default function Page() {
           <MainBtn
             text="Yadda saxla"
             className="py-4 px-32"
-            onClick={() => {
-              // TODO: Update form with formId
-            }}
+            onClick={handleSubmit}
           />
         </div>
       )}

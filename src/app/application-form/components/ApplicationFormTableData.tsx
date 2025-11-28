@@ -11,7 +11,11 @@ export default function ApplicationFormTableData(props: ApplicationForm) {
   const [copyLink, setCopyLink] = useState<boolean>(false);
   return (
     <div className="bg-[#f7f7f7] rounded-[16px] overflow-hidden">
-      <TableDataHeader copyLink={copyLink} setCopyLink={setCopyLink} />
+      <TableDataHeader
+        copyLink={copyLink}
+        setCopyLink={setCopyLink}
+        formId={props.id}
+      />
       {copyLink ? (
         <TableDataCopyLink setCopyLink={setCopyLink} {...props} />
       ) : (

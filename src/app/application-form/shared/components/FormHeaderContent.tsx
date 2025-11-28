@@ -15,10 +15,10 @@ export default function FormHeaderContent({
   isEditMode = false,
 }: FormHeaderContentProps) {
   const title = isEditMode
-    ? 'Müraciət formu redaktə et'
+    ? 'Müraciət formunu redaktə et'
     : 'Müraciət formu yarat';
   const description = isEditMode
-    ? 'Mövcud müraciət formasını redaktə edə bilərsiniz!'
+    ? 'Aşağıdakı xanalardan müraciət formunu redaktə edə bilərsiniz!'
     : 'Xanaları dolduraraq yeni müraciət formu yarada bilərsiniz!';
 
   if (onAddPage) {

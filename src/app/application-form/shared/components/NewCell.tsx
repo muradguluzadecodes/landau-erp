@@ -1,103 +1,198 @@
 'use client';
 
 import { Checkbox } from 'antd';
-import { ChangeEvent, useState } from 'react';
+import { useEffect, useRef } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 
 import FloatInput from '@/components/FloatInput';
+import {
+  useApplicationFormStore,
+  type FieldFormData,
+} from '@/store/useApplicationFormStore';
 
-export default function NewCell() {
-  const [formData, setFormData] = useState({
-    entryTextAze: '',
-    entryTextRu: '',
-    entryTextEng: '',
-    headerAze: '',
-    headerRu: '',
-    headerEng: '',
-    linkedField: '',
-    mandatory: false,
+interface NewCellProps {
+  pageId: string | number;
+  fieldId: string | number;
+}
+
+export default function NewCell({ pageId, fieldId }: NewCellProps) {
+  const { pages, updateField } = useApplicationFormStore();
+  const page = pages.find((p) => p.id === pageId);
+  const field = page?.fields.find((f) => f.id === fieldId);
+
+  const { control, watch, reset } = useForm<FieldFormData>({
+    defaultValues: field || ({} as FieldFormData),
+    mode: 'onChange',
   });
 
-  const handleInputChange =
-    (key: string) => (event: ChangeEvent<HTMLInputElement>) => {
-      setFormData((prev) => ({ ...prev, [key]: event.target.value }));
-    };
+  // Watch all form values and sync with store
+  const formValues = watch();
+  const isInitialMount = useRef(true);
 
-  const handleSelectChange = (key: string) => (value: string) => {
-    setFormData((prev) => ({ ...prev, [key]: value }));
-  };
+  // Initialize form when field data changes (e.g., from API)
+  // IMPORTANT: All hooks must be called before any early returns
+  useEffect(() => {
+    if (field && isInitialMount.current) {
+      reset(field);
+      isInitialMount.current = false;
+    }
+  }, [field, reset]);
 
-  const handleCheckboxChange = (checked: boolean) => {
-    setFormData((prev) => ({ ...prev, mandatory: checked }));
-  };
+  // Sync form values to store whenever user types (debounced)
+  useEffect(() => {
+    if (!field) return; // Early exit if field doesn't exist
+    if (isInitialMount.current) return; // Skip on initial mount
+
+    const timeoutId = setTimeout(() => {
+      Object.entries(formValues).forEach(([key, value]) => {
+        const fieldValue = field[key as keyof FieldFormData];
+        if (value !== fieldValue && value !== undefined) {
+          updateField(pageId, fieldId, {
+            [key]: value,
+          } as Partial<FieldFormData>);
+        }
+      });
+    }, 300); // Debounce by 300ms
+
+    return () => clearTimeout(timeoutId);
+  }, [formValues, field, pageId, fieldId, updateField]);
+
+  // Early return AFTER all hooks are called
+  if (!field) {
+    return null;
+  }
 
   return (
     <div className="grid grid-cols-3 gap-4">
-      {/* Giriş mətni sırası */}
-      <FloatInput
-        label="Giriş mətni (aze)"
-        type="text"
-        value={formData.entryTextAze}
-        onChange={handleInputChange('entryTextAze')}
-        required
+      {/* Label sırası */}
+      <Controller
+        name="label_az"
+        control={control}
+        rules={{ required: 'Label (aze) mütləq doldurulmalıdır' }}
+        render={({ field, fieldState }) => (
+          <FloatInput
+            label="Label (aze)"
+            type="text"
+            value={field.value || ''}
+            onChange={(e) => field.onChange(e.target.value)}
+            required
+            errorMessage={fieldState.error?.message}
+            isError={!!fieldState.error}
+          />
+        )}
       />
-      <FloatInput
-        label="Giriş mətni (ru)"
-        type="text"
-        value={formData.entryTextRu}
-        onChange={handleInputChange('entryTextRu')}
-        required
+      <Controller
+        name="label_ru"
+        control={control}
+        rules={{ required: 'Label (ru) mütləq doldurulmalıdır' }}
+        render={({ field, fieldState }) => (
+          <FloatInput
+            label="Label (ru)"
+            type="text"
+            value={field.value || ''}
+            onChange={(e) => field.onChange(e.target.value)}
+            required
+            errorMessage={fieldState.error?.message}
+            isError={!!fieldState.error}
+          />
+        )}
       />
-      <FloatInput
-        label="Giriş mətni (eng)"
-        type="text"
-        value={formData.entryTextEng}
-        onChange={handleInputChange('entryTextEng')}
-        required
+      <Controller
+        name="label_en"
+        control={control}
+        rules={{ required: 'Label (eng) mütləq doldurulmalıdır' }}
+        render={({ field, fieldState }) => (
+          <FloatInput
+            label="Label (eng)"
+            type="text"
+            value={field.value || ''}
+            onChange={(e) => field.onChange(e.target.value)}
+            required
+            errorMessage={fieldState.error?.message}
+            isError={!!fieldState.error}
+          />
+        )}
       />
 
-      {/* Header sırası */}
-      <FloatInput
-        label="Header (aze)"
-        type="text"
-        value={formData.headerAze}
-        onChange={handleInputChange('headerAze')}
-        required
+      {/* Placeholder sırası */}
+      <Controller
+        name="placeholder_az"
+        control={control}
+        rules={{ required: 'Placeholder (aze) mütləq doldurulmalıdır' }}
+        render={({ field, fieldState }) => (
+          <FloatInput
+            label="Placeholder (aze)"
+            type="text"
+            value={field.value || ''}
+            onChange={(e) => field.onChange(e.target.value)}
+            required
+            errorMessage={fieldState.error?.message}
+            isError={!!fieldState.error}
+          />
+        )}
       />
-      <FloatInput
-        label="Header (ru)"
-        type="text"
-        value={formData.headerRu}
-        onChange={handleInputChange('headerRu')}
-        required
+      <Controller
+        name="placeholder_ru"
+        control={control}
+        rules={{ required: 'Placeholder (ru) mütləq doldurulmalıdır' }}
+        render={({ field, fieldState }) => (
+          <FloatInput
+            label="Placeholder (ru)"
+            type="text"
+            value={field.value || ''}
+            onChange={(e) => field.onChange(e.target.value)}
+            required
+            errorMessage={fieldState.error?.message}
+            isError={!!fieldState.error}
+          />
+        )}
       />
-      <FloatInput
-        label="Header (eng)"
-        type="text"
-        value={formData.headerEng}
-        onChange={handleInputChange('headerEng')}
-        required
+      <Controller
+        name="placeholder_en"
+        control={control}
+        rules={{ required: 'Placeholder (eng) mütləq doldurulmalıdır' }}
+        render={({ field, fieldState }) => (
+          <FloatInput
+            label="Placeholder (eng)"
+            type="text"
+            value={field.value || ''}
+            onChange={(e) => field.onChange(e.target.value)}
+            required
+            errorMessage={fieldState.error?.message}
+            isError={!!fieldState.error}
+          />
+        )}
       />
 
-      {/* Linked field və Mandatory */}
-      <FloatInput
-        label="Linked field"
-        type="select"
-        value={formData.linkedField}
-        onSelectChange={handleSelectChange('linkedField')}
-        options={[
-          { label: 'Seçin', value: '' },
-          // Buraya real seçimlər əlavə edilə bilər
-        ]}
-        required
+      {/* Field details və Mandatory */}
+      <Controller
+        name="field_details"
+        control={control}
+        render={({ field, fieldState }) => (
+          <FloatInput
+            label="Field details"
+            type="text"
+            value={field.value || ''}
+            onChange={(e) => field.onChange(e.target.value)}
+            errorMessage={fieldState.error?.message}
+            isError={!!fieldState.error}
+          />
+        )}
       />
-      <div className="flex items-center">
-        <Checkbox
-          checked={formData.mandatory}
-          onChange={(e) => handleCheckboxChange(e.target.checked)}
-        >
-          Mandatory
-        </Checkbox>
-      </div>
+      <Controller
+        name="mandatory"
+        control={control}
+        render={({ field }) => (
+          <div className="flex items-center">
+            <Checkbox
+              checked={field.value || false}
+              onChange={(e) => field.onChange(e.target.checked)}
+            >
+              Mandatory
+            </Checkbox>
+          </div>
+        )}
+      />
     </div>
   );
 }
