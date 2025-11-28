@@ -2,7 +2,7 @@ import { toast } from 'react-toastify';
 
 import api from '@/lib/axios';
 import { USER_BASE, USER_SEND_EMAIL } from '@/lib/endpoints';
-import { INTERNAL_SERVER } from '@/lib/errors';
+import { SEND_EMAIL_ERROR } from '@/lib/errors';
 import { SUCCES_USER_EMAIL_SENT } from '@/lib/messages';
 
 export async function sendEmail(id: string) {
@@ -11,9 +11,9 @@ export async function sendEmail(id: string) {
     toast.success(SUCCES_USER_EMAIL_SENT);
   } catch (err: any) {
     if (err.status === 400) {
-      //   throw new Error(EASY_PASSWORD);
+      toast.error(SEND_EMAIL_ERROR);
     }
 
-    toast.error(INTERNAL_SERVER);
+    // toast.error(INTERNAL_SERVER);
   }
 }

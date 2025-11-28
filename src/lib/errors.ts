@@ -10,3 +10,8 @@ export const EASY_PASSWORD =
 
 export const EMAIL_VALIDATION_ERROR = 'Keçərli email adresi daxil edin';
 export const PASSWORD_RESET_VALIDATION_ERROR = 'Şifrələr eyni deyil';
+
+/*USER*/
+
+export const SEND_EMAIL_ERROR =
+  'Bu istifadəçiyə email artıq daha əvvəl göndərilibdir.';

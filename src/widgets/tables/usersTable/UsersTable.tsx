@@ -28,7 +28,7 @@ export default function UsersTable() {
       email: user.email,
       mobile_number: user.mobile_number,
       position: user.position?.name,
-      status: user.is_active ? 'inactive' : 'active',
+      status: user.is_active,
     }),
   );
 

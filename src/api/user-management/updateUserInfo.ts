@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import api from '@/lib/axios';
 import { USER_BASE } from '@/lib/endpoints';
 import { INTERNAL_SERVER } from '@/lib/errors';
-import { UpdateUser } from '@/lib/types';
+import { UpdateUser, UserItem } from '@/lib/types';
 
 export interface ChangePasswordProps {
   id: string;
@@ -15,16 +15,21 @@ export async function updateUserInfo({
   id,
   data,
   func,
+  method = 'put',
 }: {
   id: string;
-  data: UpdateUser;
+  data: UpdateUser | Partial<UserItem>;
+  method?: 'put' | 'patch';
   func?: () => void;
 }) {
   try {
-    console.log('UPDATE DATA');
-    await api.put(`${USER_BASE}/${id}/`, data);
-
-    toast.success('Məlumatlar uğurla yeniləndi');
+    if (method === 'put') {
+      await api.put(`${USER_BASE}/${id}/`, data);
+      toast.success('Məlumatlar uğurla yeniləndi');
+    } else {
+      await api.patch(`${USER_BASE}/${id}/`, data);
+      toast.success('Uğurlu əməliyyat!');
+    }
 
     func?.();
   } catch (err: any) {

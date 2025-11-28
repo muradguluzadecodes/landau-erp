@@ -5,6 +5,7 @@ import { Pencil } from 'lucide-react';
 import { notFound, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import { makeAdmin } from '@/api/user-management/makeAdmin';
 import { sendEmail } from '@/api/user-management/sendEmail';
 import { updateUserInfo } from '@/api/user-management/updateUserInfo';
 import FloatInput from '@/components/FloatInput';
@@ -45,6 +46,8 @@ export default function Page() {
   const [initialUserData, setInitialUserData] =
     useState<UpdateUser>(initialValues);
 
+  const [isActive, setIsActive] = useState(user?.is_active);
+
   const { directories } = useDirectories();
 
   useEffect(() => {
@@ -68,8 +71,6 @@ export default function Page() {
     }
   }, [user]);
 
-  console.log('userData', userData);
-
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [isOpenChangePasswordModal, setIsOpenChangePasswordModal] =
     useState(false);
@@ -84,6 +85,11 @@ export default function Page() {
   const { mutate: mutateSendEmail, isPending: isPendingSendEmail } =
     useMutation({
       mutationFn: sendEmail,
+    });
+
+  const { mutate: mutateMakeAdmin, isPending: isPendingMakeAdmin } =
+    useMutation({
+      mutationFn: makeAdmin,
     });
 
   const isDisabled =
@@ -112,6 +118,28 @@ export default function Page() {
 
   const handleSendEmail = () => {
     mutateSendEmail(userId as string);
+  };
+
+  const handleMakeAdmin = () => {
+    mutateMakeAdmin(userId as string);
+  };
+
+  const handleToggleStatus = () => {
+    mutate(
+      {
+        id: userId as string,
+        data: { is_active: !isActive },
+        method: 'patch',
+      },
+      {
+        onSuccess: () => {
+          setIsActive((prev: boolean) => !prev);
+          queryClient.invalidateQueries({
+            queryKey: ['all_users'],
+          });
+        },
+      },
+    );
   };
 
   if (isLoading) return <LoadingPage />;
@@ -165,7 +193,13 @@ export default function Page() {
           </div>
 
           <div className="flex gap-4">
-            <MainBtn variant="outline" text="Admin et" />
+            <MainBtn
+              variant="outline"
+              text="Admin et"
+              onClick={handleMakeAdmin}
+              className="w-34!"
+              isLoading={isPendingMakeAdmin}
+            />
             <MainBtn
               variant="outline"
               text="Sil"
@@ -173,7 +207,13 @@ export default function Page() {
               className="w-[100px]!"
               onClick={() => setIsOpenDeleteModal(true)}
             />
-            <MainBtn variant="outline" text="Deaktiv et" color="gray" />
+            <MainBtn
+              variant="outline"
+              text={isActive ? 'Deaktiv et' : 'Aktiv et'}
+              color="gray"
+              onClick={handleToggleStatus}
+              isLoading={isPending}
+            />
             <MainBtn
               variant="outline"
               text="Email gonder"
@@ -294,12 +334,13 @@ export default function Page() {
           </div>
 
           <div className="flex justify-end mt-6 gap-2">
-            <MainBtn variant="outline" text="Geri" />
+            <MainBtn variant="outline" text="Geri" className="w-30!" />
             <MainBtn
               text="Təstiqlə"
               isLoading={isPending}
               disabled={isDisabled}
               onClick={handleSubmit}
+              className="w-30!"
             />
           </div>
         </div>

@@ -30,8 +30,8 @@ const menuItems = [
         label: <Link href="/settings">Ayarlar</Link>,
       },
       {
-        key: 'erp',
-        label: <Link href="/erp">ERP icazələr</Link>,
+        key: 'erp-permissions',
+        label: <Link href="/erp-permissions">ERP icazələr</Link>,
       },
     ],
   },
