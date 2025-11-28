@@ -1,15 +1,13 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Modal } from 'antd';
 import { useState } from 'react';
 
 import FloatInput from '../FloatInput';
 import { MainBtn } from '../MainBtn';
 import { createUser } from '@/api/user-management/createUser';
-import { Institution as InstitutionType } from '@/lib/types';
+import { useDirectories } from '@/hooks/useDirectoryOptions';
+import { getDirectoryOptionsForSelect } from '@/lib/helpers';
 import { CreateUserErrors, CreateUserFormValues } from '@/lib/types';
-import { useAllDepartments } from '@/queries/departments/useAllDepartments';
-import { useAllInstituons } from '@/queries/institutions/useAllInstituons';
-import { useAllPermissions } from '@/queries/permissions/useAllPermissions';
 
 const initialValues = {
   email: '',
@@ -54,34 +52,11 @@ export const CreateUserModal = ({
     ...initialErrors,
   });
 
-  const { data: institutions } = useAllInstituons();
-  const { data: permissions } = useAllPermissions();
-  const { data: departments } = useAllDepartments();
-  const institutionsOptions = institutions?.results.map(
-    (item: InstitutionType) => {
-      return {
-        value: `${item.id}`,
-        label: item.name,
-      };
-    },
-  );
-  const permissionsOptions = permissions?.results?.map(
-    (item: InstitutionType) => {
-      return {
-        value: `${item.id}`,
-        label: item.name,
-      };
-    },
-  );
+  console.log('CREATE USER VALUES', values);
 
-  const departmentsOptions = departments?.result?.map(
-    (item: InstitutionType) => {
-      return {
-        value: `${item.id}`,
-        label: item.name,
-      };
-    },
-  );
+  const queryClient = useQueryClient();
+
+  const { directories } = useDirectories();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -100,6 +75,7 @@ export const CreateUserModal = ({
     val: string | number,
     key: keyof typeof values,
   ) => {
+    console.log('HANDLE SELECT CHANGE', val, key);
     setValues((prev) => ({
       ...prev,
       [key]: val,
@@ -117,23 +93,26 @@ export const CreateUserModal = ({
   const handleSubmit = () => {
     // if (!validateCreateUserData(values, setErrors)) return;
 
-    // TEMPORARY
+    //TODO: TEMPORARY
     const correctedValues: CreateUserFormValues = {
       ...values,
-      department: null,
-      educational_institution: null,
       language: 'az',
       custom_permission_id: null,
-      position: null,
     };
 
     mutate(correctedValues);
-    setValues({ ...initialValues });
-    setIsOpenModal(false);
   };
 
   const { mutate, isPending } = useMutation({
     mutationFn: createUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['all_users'],
+      });
+
+      setValues({ ...initialValues });
+      setIsOpenModal(false);
+    },
   });
 
   return (
@@ -192,7 +171,7 @@ export const CreateUserModal = ({
           label="Email ünvanı"
           type="text"
           required
-          value={values?.email || ''}
+          value={values?.email?.toString() || ''}
           onChange={(e) => handleChange(e, 'email')}
           errorMessage={errors.email}
           isError={!!errors.email}
@@ -202,7 +181,7 @@ export const CreateUserModal = ({
           label="Mobil nömrə"
           type="text"
           required
-          value={values?.mobile_number || ''}
+          value={values?.mobile_number?.toString() || ''}
           onChange={(e) => handleChange(e, 'mobile_number')}
           errorMessage={errors.mobile_number}
           isError={!!errors.mobile_number}
@@ -212,22 +191,24 @@ export const CreateUserModal = ({
           type="select"
           label="Təhsil müəssisəsi"
           required
-          value={values?.educational_institution?.toString() || ''}
+          value={values?.educational_institution.toString() || ''}
           containerClassName="mb-4"
           onSelectChange={(v) =>
             handleSelectChange(parseInt(v), 'educational_institution')
           }
-          options={institutionsOptions}
+          options={getDirectoryOptionsForSelect(directories.institutions)}
           errorMessage={errors.educational_institution}
           isError={!!errors.educational_institution}
         />
 
         <FloatInput
           label="Vəzifə"
-          type="text"
+          type="select"
           required
-          value={values?.position?.toString() || ''}
-          onChange={(e) => handleChange(e, 'position')}
+          value={values?.position.toString() || ''}
+          onSelectChange={(v) => handleSelectChange(parseInt(v), 'position')}
+          containerClassName="mb-4"
+          options={getDirectoryOptionsForSelect(directories.positions)}
           errorMessage={errors.position}
           isError={!!errors.position}
         />
@@ -235,22 +216,25 @@ export const CreateUserModal = ({
         <FloatInput
           type="select"
           label="Departament"
-          value={values?.department?.toString() || ''}
+          value={values?.department.toString() || ''}
           containerClassName="mb-4"
           onSelectChange={(v) => handleSelectChange(parseInt(v), 'department')}
-          options={departmentsOptions}
+          options={getDirectoryOptionsForSelect(directories.departments)}
+          errorMessage={errors.department}
+          isError={!!errors.department}
         />
 
         <FloatInput
           type="select"
           label="ERP icazələr"
           required
-          value={values?.custom_permission_id?.toString() || ''}
+          // value={values?.custom_permission_id?.toString() || ''}
+          value={' consectetur adipiscing elit'}
           containerClassName="mb-4"
           onSelectChange={(v) =>
             handleSelectChange(parseInt(v), 'custom_permission_id')
           }
-          options={permissionsOptions}
+          // options={permissionsOptions}
           errorMessage={errors.custom_permission_id}
           isError={!!errors.custom_permission_id}
         />
@@ -259,7 +243,7 @@ export const CreateUserModal = ({
           type="select"
           label="Dil"
           required
-          value={values.language as string}
+          value={values.language}
           onSelectChange={(v) => handleSelectChange(v, 'language')}
           options={[
             { value: 'az', label: 'Azərbaycan' },

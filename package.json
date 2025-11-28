@@ -9,7 +9,8 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "format": "prettier --write .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "type-check": "tsc --pretty --noEmit"
   },
   "dependencies": {
     "@ant-design/nextjs-registry": "^1.2.0",

@@ -1,15 +1,13 @@
 'use client';
 
-import { useAllApplicationForm } from '@/queries/application-form/useAllApplicationForm';
 import ApplicationFormTableData from './ApplicationFormTableData';
 import { ApplicationForm } from '@/lib/types';
+import { useAllApplicationForm } from '@/queries/application-form/useAllApplicationForm';
 
 function ApplicationFormTable() {
   const { data: formsData, isLoading } = useAllApplicationForm();
   const forms = formsData?.results ?? [];
 
-  console.log('forms', forms);
-  console.log('isLoading', isLoading);
   if (isLoading) {
     return <p>Yüklənir...</p>;
   }

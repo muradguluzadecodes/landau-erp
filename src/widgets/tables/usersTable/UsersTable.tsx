@@ -2,7 +2,7 @@
 
 import { Pagination, Select, Table, TableProps } from 'antd';
 import { useRouter } from 'next/navigation';
-import { useShallow } from 'zustand/shallow';
+import { useMemo } from 'react';
 
 import { columns } from './columns';
 import { Filters } from './Filters';
@@ -14,20 +14,16 @@ import { useUserFilters } from '@/store/useUserFilters';
 
 export default function UsersTable() {
   const router = useRouter();
-  const { filters, setFilter } = useUserFilters(
-    useShallow((state) => ({
-      filters: state,
-      setFilter: state.setFilter,
-    })),
-  );
+  const filters = useUserFilters((state) => state);
+  const setFilter = useUserFilters((state) => state.setFilter);
 
-  const params = getOnlyFilters(filters);
+  const params = useMemo(() => getOnlyFilters(filters), [filters]);
 
   const { data: users, isLoading } = useAllUsers(params);
   const tableData: UserTableRow[] | undefined = users?.results?.map(
     (user: UserItem) => ({
       key: user.id,
-      fullName: user.full_name,
+      fullName: `${user.first_name} ${user.last_name} ${user.father_name}`,
       userName: user.username,
       email: user.email,
       mobile_number: user.mobile_number,

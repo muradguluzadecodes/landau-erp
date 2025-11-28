@@ -23,6 +23,7 @@ interface FloatInputProps {
   rightIcon?: ReactNode;
   onRightIconClick?: () => void;
   rightIconClassName?: string;
+  defaultSelectValue?: string;
 }
 
 const FloatInput = ({
@@ -43,6 +44,7 @@ const FloatInput = ({
   rightIcon = null,
   onRightIconClick,
   rightIconClassName,
+  defaultSelectValue,
 }: FloatInputProps) => {
   const [focus, setFocus] = useState(false);
 
@@ -76,13 +78,15 @@ const FloatInput = ({
       {/** SELECT */}
       {type === 'select' ? (
         <Select
-          onChange={(val: string) => onSelectChange(val)}
+          // onChange={}
           options={options}
           disabled={disabled}
           style={{
             width: '100%',
             ...disabledStyle,
           }}
+          defaultValue={defaultSelectValue}
+          onSelect={(val: string) => onSelectChange(val)}
           className="rounded-full"
         />
       ) : type === 'password' ? (

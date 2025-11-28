@@ -2,6 +2,7 @@
 
 import { Checkbox } from 'antd';
 import { ChangeEvent, useState } from 'react';
+
 import FloatInput from '../FloatInput';
 
 export default function NewCell() {

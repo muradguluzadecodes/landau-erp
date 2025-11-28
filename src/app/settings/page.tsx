@@ -29,11 +29,13 @@ export default function Page() {
     );
   };
 
+  //TODO: Hələlik az dilini seçirik. Dil məsələsini dəqiqləşdirdikdən sonra dəyişiklikləri et
+
   const tableData: {
     name: string;
     key: string;
   }[] = data?.results?.map((item: SettingItem) => ({
-    name: item.name,
+    name: item.name_az,
     key: item.id,
   }));
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Pencil } from 'lucide-react';
 import { notFound, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -14,8 +14,9 @@ import { ChangeContactModal } from '@/components/Modals/ChangeContactModal';
 import { ChangeMainDataModal } from '@/components/Modals/ChangeMainDataModal';
 import { ChangePasswordModal } from '@/components/Modals/ChangePasswordModal';
 import { DeleteUserModal } from '@/components/Modals/DeleteUserModal';
+import { useDirectories } from '@/hooks/useDirectoryOptions';
 import { LanguageEnum } from '@/lib/enums';
-import { formatDate } from '@/lib/helpers';
+import { formatDate, getDirectorySelectValue } from '@/lib/helpers';
 import { LanguageKey, UpdateUser } from '@/lib/types';
 import { useUserById } from '@/queries/user/useUserById';
 
@@ -36,12 +37,15 @@ const initialValues: UpdateUser = {
 export default function Page() {
   const params = useParams();
   const userId = params.userId;
+  const queryClient = useQueryClient();
 
   const { data: user, isLoading } = useUserById(userId as string);
 
   const [userData, setUserData] = useState<UpdateUser>(initialValues);
   const [initialUserData, setInitialUserData] =
     useState<UpdateUser>(initialValues);
+
+  const { directories } = useDirectories();
 
   useEffect(() => {
     if (user) {
@@ -52,9 +56,9 @@ export default function Page() {
         father_name: user.father_name || '',
         username: user.username || '',
         mobile_number: user.mobile_number || '',
-        educational_institution: user.educational_institution || '',
-        position: user.position || '',
-        department: user.department || '',
+        educational_institution: user.educational_institution?.id || '',
+        position: user.position?.id || '',
+        department: user.department?.id || '',
         language: user.language || '',
         custom_permission_id: user.custom_permission_id || '',
       };
@@ -63,6 +67,8 @@ export default function Page() {
       setInitialUserData(formatted);
     }
   }, [user]);
+
+  console.log('userData', userData);
 
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [isOpenChangePasswordModal, setIsOpenChangePasswordModal] =
@@ -88,7 +94,6 @@ export default function Page() {
 
     const updatedUserData = {
       ...userData,
-      position: null,
       custom_permission_id: null,
     };
 
@@ -97,6 +102,9 @@ export default function Page() {
       {
         onSuccess: () => {
           setInitialUserData(userData);
+          queryClient.invalidateQueries({
+            queryKey: ['user', userId],
+          });
         },
       },
     );
@@ -137,6 +145,7 @@ export default function Page() {
         setIsOpenModal={setIsOpenMainDataModal}
         userData={userData}
         setUserData={setUserData}
+        directories={directories}
       />
 
       <section className="section">
@@ -145,7 +154,7 @@ export default function Page() {
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-[24px] font-semibold mb-2">
-              {user.full_name} {user.father_name} Oğlu
+              {user.last_name} {user.first_name} {user.father_name} Oğlu
             </h1>
             <p className="text-[14px] text-light">
               Son giriş vaxtı:{' '}
@@ -189,13 +198,15 @@ export default function Page() {
             <FloatInput
               type="text"
               value={userData?.mobile_number || ''}
-              label="Telefon nomresi"
+              label="Telefon nömrəsi"
+              labelClassName="bg-subSection-bg"
               disabled
             />
             <FloatInput
               type="text"
               value={userData?.email || ''}
               label="Email"
+              labelClassName="bg-subSection-bg"
               disabled
             />
           </div>
@@ -226,26 +237,42 @@ export default function Page() {
               label="İstifadəçi adı"
               value={userData?.username || ''}
               disabled
+              labelClassName="bg-subSection-bg"
             />
 
             <FloatInput
               label="Təhsil müəssisəsi"
               type="text"
-              value={userData?.educational_institution as string}
+              value={getDirectorySelectValue(
+                userData?.educational_institution,
+                directories,
+                'institutions',
+              )}
+              labelClassName="bg-subSection-bg"
               disabled
             />
 
             <FloatInput
               label="Vəzifə"
               type="text"
-              value={userData?.position || ''}
+              value={getDirectorySelectValue(
+                userData?.position,
+                directories,
+                'positions',
+              )}
+              labelClassName="bg-subSection-bg"
               disabled
             />
 
             <FloatInput
               label="Departament"
               type="text"
-              value={userData?.department as string}
+              value={getDirectorySelectValue(
+                userData?.department,
+                directories,
+                'departments',
+              )}
+              labelClassName="bg-subSection-bg"
               disabled
             />
 
@@ -253,6 +280,7 @@ export default function Page() {
               type="text"
               label="ERP icazələr"
               value={userData?.custom_permission_id as string}
+              labelClassName="bg-subSection-bg"
               disabled
             />
 
@@ -260,6 +288,7 @@ export default function Page() {
               type="text"
               label="Dil"
               value={LanguageEnum[userData?.language as LanguageKey]}
+              labelClassName="bg-subSection-bg"
               disabled
             />
           </div>

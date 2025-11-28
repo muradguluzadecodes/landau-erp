@@ -23,13 +23,14 @@ export const SettingsEditModal = ({
   setEditRow: (value: SettingsEditRow | null) => void;
   type: SettingsVariants;
 }) => {
-  const [tempValue, setTempValue] = useState(editRow?.names?.name || '');
+  //TODO: Hələlik az dilini seçirik. Dil məsələsini dəqiqləşdirdikdən sonra dəyişiklikləri et
+  const [tempValue, setTempValue] = useState(editRow?.names?.name_az || '');
   const queryClient = useQueryClient();
   const action = editRow?.action;
 
   useEffect(() => {
     if (editRow?.names) {
-      setTempValue(editRow?.names.name || '');
+      setTempValue(editRow?.names.name_az || '');
     }
   }, [editRow]);
 
@@ -112,11 +113,12 @@ export const SettingsEditModal = ({
           className="w-full"
           onClick={() => setEditRow(null)}
         />
+
         <MainBtn
           className="w-full"
           text={buttonText}
           disabled={
-            action === 'update' ? tempValue === editRow?.names?.name : false
+            action === 'update' ? tempValue === editRow?.names?.name_az : false
           }
           onClick={handleSubmit}
           isLoading={isPending}

@@ -3,9 +3,13 @@ import { useEffect, useState } from 'react';
 
 import FloatInput from '../FloatInput';
 import { MainBtn } from '../MainBtn';
-import { Institution as InstitutionType, UpdateUser } from '@/lib/types';
-import { useAllDepartments } from '@/queries/departments/useAllDepartments';
-import { useAllInstituons } from '@/queries/institutions/useAllInstituons';
+import { LanguageEnum } from '@/lib/enums';
+import {
+  Directories,
+  DirectoryItem,
+  DirectoryVariants,
+  UpdateUser,
+} from '@/lib/types';
 import { useAllPermissions } from '@/queries/permissions/useAllPermissions';
 
 export const ChangeMainDataModal = ({
@@ -13,39 +17,39 @@ export const ChangeMainDataModal = ({
   setIsOpenModal,
   userData,
   setUserData,
+  directories,
 }: {
   isOpenModal: boolean;
   setIsOpenModal: (value: boolean) => void;
   userData: UpdateUser;
   setUserData: (data: UpdateUser) => void;
+  directories: Directories;
 }) => {
   const [values, setValues] = useState<UpdateUser>({
     ...userData,
   });
 
-  const { data: institutions } = useAllInstituons();
   const { data: permissions } = useAllPermissions();
-  const { data: departments } = useAllDepartments();
-  const institutionsOptions = institutions?.results.map(
-    (item: InstitutionType) => {
+
+  const generateOptionsForSelect = (
+    directoryData: Directories | DirectoryItem[],
+    variant: DirectoryVariants,
+  ) => {
+    const options = Array.isArray(directoryData)
+      ? directoryData
+      : directoryData[variant];
+
+    return options?.map((item: DirectoryItem) => {
       return {
         value: `${item.id}`,
         label: item.name,
       };
-    },
-  );
+    });
+  };
 
+  //TODO: WILL ADD IT TO THE USE DIRECTORY OPTIONS
   const permissionsOptions = permissions?.results?.map(
-    (item: InstitutionType) => {
-      return {
-        value: `${item.id}`,
-        label: item.name,
-      };
-    },
-  );
-
-  const departmentsOptions = departments?.result?.map(
-    (item: InstitutionType) => {
+    (item: DirectoryItem) => {
       return {
         value: `${item.id}`,
         label: item.name,
@@ -73,9 +77,11 @@ export const ChangeMainDataModal = ({
     val: string | number,
     key: keyof typeof values,
   ) => {
+    const updatedValue = key === 'language' ? val : Number(val);
+
     setValues((prev) => ({
       ...prev,
-      [key]: val,
+      [key]: updatedValue,
     }));
   };
 
@@ -84,9 +90,8 @@ export const ChangeMainDataModal = ({
     setIsOpenModal(false);
   };
 
-  console.log('VALUESSSSS', values);
-
   const handleSubmit = () => {
+    // setValues({ ...values });
     setUserData({ ...values });
     setIsOpenModal(false);
   };
@@ -111,30 +116,35 @@ export const ChangeMainDataModal = ({
         />
 
         <FloatInput
+          type="select"
           label="Vəzifə"
-          type="text"
-          value={values?.position?.toString() || ''}
-          onChange={(e) => handleChange(e, 'position')}
+          value={values.position?.toString() || ''}
+          defaultSelectValue={values.position?.toString() || ''}
+          containerClassName="mb-4"
+          onSelectChange={(v) => handleSelectChange(parseInt(v), 'position')}
+          options={generateOptionsForSelect(directories, 'positions')}
         />
 
         <FloatInput
           type="select"
           label="Təhsil müəssisəsi"
           value={values?.educational_institution?.toString() || ''}
+          defaultSelectValue={values?.educational_institution?.toString() || ''}
           containerClassName="mb-4"
           onSelectChange={(v) =>
             handleSelectChange(parseInt(v), 'educational_institution')
           }
-          options={institutionsOptions}
+          options={generateOptionsForSelect(directories, 'institutions')}
         />
 
         <FloatInput
           type="select"
           label="Departament"
-          value={values?.custom_permission_id?.toString() || ''}
+          value={values.department?.toString() || ''}
+          defaultSelectValue={values.department?.toString() || ''}
           containerClassName="mb-4"
           onSelectChange={(v) => handleSelectChange(parseInt(v), 'department')}
-          options={departmentsOptions}
+          options={generateOptionsForSelect(directories, 'departments')}
         />
         <FloatInput
           type="select"
@@ -151,7 +161,10 @@ export const ChangeMainDataModal = ({
           type="select"
           label="Dil"
           required
-          value={values.language as string}
+          value={values.language}
+          defaultSelectValue={
+            LanguageEnum[values.language as keyof typeof LanguageEnum]
+          }
           onSelectChange={(v) => handleSelectChange(v, 'language')}
           options={[
             { value: 'az', label: 'Azərbaycan' },

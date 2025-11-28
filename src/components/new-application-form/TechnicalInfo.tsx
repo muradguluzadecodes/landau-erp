@@ -1,7 +1,7 @@
 'use client';
 
-import { type ChangeEvent, useState } from 'react';
 import { Pencil } from 'lucide-react';
+import { type ChangeEvent, useState } from 'react';
 
 import FloatInput from '../FloatInput';
 import { UploadCloud } from '@/assets/icons/icons';

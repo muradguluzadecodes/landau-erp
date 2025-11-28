@@ -356,9 +356,6 @@ export default function TechnicalInfoRulesModal({
   const [value, setValue] = useState<Descendant[]>(() => createInitialValue());
   const colorPickerRef = useRef<HTMLInputElement>(null);
 
-  console.log('initialValue', createInitialValue());
-  console.log('value', value);
-
   const renderElement = useCallback((props: RenderElementProps) => {
     // Delegates block rendering to the Element component for consistency.
     return <Element {...props} />;
@@ -396,7 +393,6 @@ export default function TechnicalInfoRulesModal({
   );
 
   const triggerColorPicker = useCallback(() => {
-    // Programmatically opens the native color picker linked to the toolbar icon.
     colorPickerRef.current?.click();
   }, []);
 

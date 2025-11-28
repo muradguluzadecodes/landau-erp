@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { getAllPermissions } from '@/api/permissions/getAllPermissions';
+import { getAllPositions } from '@/api/positions/getAllPositions';
 
-export function useAllPermissions() {
+export function useAllPositions() {
   return useQuery({
     queryKey: ['all_positions'],
-    queryFn: getAllPermissions,
+    queryFn: getAllPositions,
     refetchOnWindowFocus: false,
   });
 }
