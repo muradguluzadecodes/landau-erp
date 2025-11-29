@@ -10,7 +10,6 @@ import {
   DirectoryVariants,
   UpdateUser,
 } from '@/lib/types';
-import { useAllPermissions } from '@/queries/permissions/useAllPermissions';
 
 export const ChangeMainDataModal = ({
   isOpenModal,
@@ -29,8 +28,6 @@ export const ChangeMainDataModal = ({
     ...userData,
   });
 
-  const { data: permissions } = useAllPermissions();
-
   const generateOptionsForSelect = (
     directoryData: Directories | DirectoryItem[],
     variant: DirectoryVariants,
@@ -48,14 +45,6 @@ export const ChangeMainDataModal = ({
   };
 
   //TODO: WILL ADD IT TO THE USE DIRECTORY OPTIONS
-  const permissionsOptions = permissions?.results?.map(
-    (item: DirectoryItem) => {
-      return {
-        value: `${item.id}`,
-        label: item.name,
-      };
-    },
-  );
 
   useEffect(() => {
     setValues({
@@ -150,11 +139,12 @@ export const ChangeMainDataModal = ({
           type="select"
           label="ERP icazələr"
           value={values?.custom_permission_id?.toString() || ''}
+          defaultSelectValue={values.custom_permission_id?.toString() || ''}
           containerClassName="mb-4"
           onSelectChange={(v) =>
             handleSelectChange(parseInt(v), 'custom_permission_id')
           }
-          options={permissionsOptions}
+          options={generateOptionsForSelect(directories, 'custom_permissions')}
         />
 
         <FloatInput

@@ -7,7 +7,7 @@ import { useState } from 'react';
 import FloatInput from '../FloatInput';
 import { MainBtn } from '../MainBtn';
 import { createNewSetting } from '@/api/settings/createNewSetting';
-import { SettingsEnum } from '@/lib/enums';
+import { DirectoriesEnum } from '@/lib/enums';
 import { SettingsVariants } from '@/lib/types';
 
 export const AddSettingModal = ({
@@ -20,7 +20,7 @@ export const AddSettingModal = ({
   type: SettingsVariants;
 }) => {
   const [name, setName] = useState('');
-  const modalTitle = `Yeni ${SettingsEnum[type].toLocaleLowerCase()} yarat`;
+  const modalTitle = `Yeni ${DirectoriesEnum[type].toLocaleLowerCase()} yarat`;
   const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
@@ -53,7 +53,7 @@ export const AddSettingModal = ({
       <FloatInput
         containerClassName="mt-6"
         type="text"
-        label={SettingsEnum[type]}
+        label={DirectoriesEnum[type]}
         onChange={(e) => setName(e.target.value)}
         value={name}
         required

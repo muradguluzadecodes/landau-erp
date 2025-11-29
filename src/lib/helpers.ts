@@ -88,6 +88,7 @@ export const getDirectorySelectValue = (
     const directory =
       (variant === 'positions' && directories?.positions) ||
       (variant === 'departments' && directories?.departments) ||
+      (variant === 'custom_permissions' && directories?.custom_permissions) ||
       directories?.institutions;
 
     return (

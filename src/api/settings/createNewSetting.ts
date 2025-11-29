@@ -2,8 +2,13 @@
 import { toast } from 'react-toastify';
 
 import api from '@/lib/axios';
-import { POSITIONS, INSTITUTIONS, DEPARTMENTS } from '@/lib/endpoints';
-import { SettingsEnum } from '@/lib/enums';
+import {
+  POSITIONS,
+  INSTITUTIONS,
+  DEPARTMENTS,
+  CUSTOM_PERMISSIONS,
+} from '@/lib/endpoints';
+import { DirectoriesEnum } from '@/lib/enums';
 import { INTERNAL_SERVER } from '@/lib/errors';
 import { SUCCESS_CREATE_SETTINGS } from '@/lib/messages';
 import { SettingsVariants } from '@/lib/types';
@@ -19,6 +24,7 @@ export async function createNewSetting({
     positions: POSITIONS,
     institutions: INSTITUTIONS,
     departments: DEPARTMENTS,
+    custom_permissions: CUSTOM_PERMISSIONS,
   };
 
   const data = {
@@ -29,7 +35,7 @@ export async function createNewSetting({
 
   try {
     await api.post(`${ENDPOINTS[type]}`, data);
-    toast.success(`${SettingsEnum[type]} ${SUCCESS_CREATE_SETTINGS}`);
+    toast.success(`${DirectoriesEnum[type]} ${SUCCESS_CREATE_SETTINGS}`);
   } catch (err: any) {
     if (err.status === '400') {
       /*YOUR MESSAGE HERE */

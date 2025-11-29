@@ -350,3 +350,9 @@
 .ant-table-column-sorters .ant-table-column-sorter {
   display: none !important;
 }
+
+/*ANT COLLAPSE*/
+
+.ant-collapse-collapsible-header {
+  display: block !important;
+}

@@ -2,7 +2,12 @@
 import { toast } from 'react-toastify';
 
 import api from '@/lib/axios';
-import { POSITIONS, INSTITUTIONS, DEPARTMENTS } from '@/lib/endpoints';
+import {
+  POSITIONS,
+  INSTITUTIONS,
+  DEPARTMENTS,
+  CUSTOM_PERMISSIONS,
+} from '@/lib/endpoints';
 import { INTERNAL_SERVER } from '@/lib/errors';
 import {
   SUCCESS_DELETE_SETTINGS,
@@ -31,6 +36,7 @@ export async function updateAndDeleteSettings({
     positions: POSITIONS,
     institutions: INSTITUTIONS,
     departments: DEPARTMENTS,
+    custom_permissions: CUSTOM_PERMISSIONS,
   };
 
   try {

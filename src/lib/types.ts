@@ -11,12 +11,17 @@ export type DirectoryItem = {
   updated_at: string;
 };
 
-export type DirectoryVariants = 'positions' | 'institutions' | 'departments';
+export type DirectoryVariants =
+  | 'positions'
+  | 'institutions'
+  | 'departments'
+  | 'custom_permissions';
 
 export type Directories = {
   positions: DirectoryItem[];
   departments: DirectoryItem[];
   institutions: DirectoryItem[];
+  custom_permissions: DirectoryItem[];
 };
 
 export type InstitutionList = DirectoryItem[];
@@ -46,7 +51,7 @@ export type UpdateUser = {
   position: string | number;
   department: string | number;
   language: string;
-  custom_permission_id: string | number | null;
+  custom_permission_id: string | number;
 };
 
 export interface CreateUserErrors {
@@ -190,7 +195,7 @@ export type SettingItem = {
 export type SettingsVariants = DirectoryVariants;
 export type SettingRowActions = 'update' | 'delete';
 
-export type SettingsEditRow = {
+export type DirectoryEditRow = {
   id: string | number;
   names?: {
     name: string;

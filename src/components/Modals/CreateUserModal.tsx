@@ -225,13 +225,12 @@ export const CreateUserModal = ({
           type="select"
           label="ERP icazələr"
           required
-          // value={values?.custom_permission_id?.toString() || ''}
-          value={' consectetur adipiscing elit'}
+          value={values?.custom_permission_id?.toString() || ''}
           containerClassName="mb-4"
           onSelectChange={(v) =>
             handleSelectChange(parseInt(v), 'custom_permission_id')
           }
-          // options={permissionsOptions}
+          options={getDirectoryOptionsForSelect(directories.custom_permissions)}
           errorMessage={errors.custom_permission_id}
           isError={!!errors.custom_permission_id}
         />

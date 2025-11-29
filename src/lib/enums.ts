@@ -4,8 +4,9 @@ export enum LanguageEnum {
   ru = 'Русский',
 }
 
-export enum SettingsEnum {
+export enum DirectoriesEnum {
   positions = 'Vəzifə',
   departments = 'Departament',
   institutions = 'Təhsil müəssisəsi',
+  custom_permissions = 'ERP icazəsi',
 }
