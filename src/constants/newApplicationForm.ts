@@ -11,99 +11,59 @@ export const NEW_APPLICATION_FORM_TECHNICAL_INFO: BaseItem[] = [
     key: 'module',
     label: 'Modul',
     type: 'text',
-    required: true,
+    required: false,
   },
   {
-    key: 'subModule',
+    key: 'submodule',
     label: 'Alt modul',
     type: 'text',
-    required: true,
+    required: false,
   },
   {
-    key: 'responsiblePerson',
+    key: 'responsible_person',
     label: 'Cavabdeh şəxs',
     type: 'text',
-    required: true,
+    required: false,
   },
   {
-    key: 'kanbanFullLeads',
-    label: 'Kanban və mərhələlər (tam lead-lər)',
-    type: 'select',
-    required: true,
-    options: [
-      { label: 'Lead mərhələsi 1', value: 'lead-stage-1' },
-      { label: 'Lead mərhələsi 2', value: 'lead-stage-2' },
-    ],
-  },
-  {
-    key: 'kanbanPartialLeads',
-    label: 'Kanban və mərhələlər (natamam lead-lər)',
-    type: 'select',
-    required: true,
-    options: [
-      { label: 'Natamam mərhələ 1', value: 'partial-stage-1' },
-      { label: 'Natamam mərhələ 2', value: 'partial-stage-2' },
-    ],
-  },
-  {
-    key: 'academicYear',
+    key: 'academic_year',
     label: 'Tədris ili',
+    type: 'text',
+    required: false,
+  },
+  {
+    key: 'title_az',
+    label: 'Başlıq (aze)',
     type: 'text',
     required: true,
   },
   {
-    key: 'sourceFullLeads',
-    label: 'Mənbə (tam lead-lər)',
-    type: 'select',
+    key: 'title_ru',
+    label: 'Başlıq (ru)',
+    type: 'text',
     required: true,
-    options: [
-      { label: 'Mənbə 1', value: 'source-1' },
-      { label: 'Mənbə 2', value: 'source-2' },
-    ],
   },
   {
-    key: 'sourcePartialLeads',
-    label: 'Mənbə (natamam lead-lər)',
-    type: 'select',
+    key: 'title_en',
+    label: 'Başlıq (eng)',
+    type: 'text',
     required: true,
-    options: [
-      { label: 'Natamam mənbə 1', value: 'partial-source-1' },
-      { label: 'Natamam mənbə 2', value: 'partial-source-2' },
-    ],
   },
   {
-    key: 'introTextAz',
+    key: 'submission_text_az',
     label: 'Giriş mətni (aze)',
     type: 'text',
     required: true,
   },
   {
-    key: 'introTextRu',
+    key: 'submission_text_ru',
     label: 'Giriş mətni (ru)',
     type: 'text',
     required: true,
   },
   {
-    key: 'introTextEn',
+    key: 'submission_text_en',
     label: 'Giriş mətni (eng)',
-    type: 'text',
-    required: true,
-  },
-  {
-    key: 'outroTextAz',
-    label: 'Son mətni (aze)',
-    type: 'text',
-    required: true,
-  },
-  {
-    key: 'outroTextRu',
-    label: 'Son mətni (ru)',
-    type: 'text',
-    required: true,
-  },
-  {
-    key: 'outroTextEn',
-    label: 'Son mətni (eng)',
     type: 'text',
     required: true,
   },
@@ -111,19 +71,19 @@ export const NEW_APPLICATION_FORM_TECHNICAL_INFO: BaseItem[] = [
 
 export const NEW_APPLICATION_FORM_CONFIRMATION_TEXTS: BaseItem[] = [
   {
-    key: 'approvalTextAz',
+    key: 'confirmation_text_az',
     label: 'Təsdiq üçün mətn (aze)',
     type: 'text',
     required: true,
   },
   {
-    key: 'approvalTextRu',
+    key: 'confirmation_text_ru',
     label: 'Təsdiq üçün mətn (ru)',
     type: 'text',
     required: true,
   },
   {
-    key: 'approvalTextEn',
+    key: 'confirmation_text_en',
     label: 'Təsdiq üçün mətn (eng)',
     type: 'text',
     required: true,
@@ -132,15 +92,15 @@ export const NEW_APPLICATION_FORM_CONFIRMATION_TEXTS: BaseItem[] = [
 
 export const NEW_APPLICATION_FORM_RULES: TextAreaItem[] = [
   {
-    key: 'rulesAz',
+    key: 'rules_text_az',
     label: 'Qaydalar (aze)',
   },
   {
-    key: 'rulesRu',
+    key: 'rules_text_ru',
     label: 'Qaydalar (ru)',
   },
   {
-    key: 'rulesEn',
+    key: 'rules_text_en',
     label: 'Qaydalar (eng)',
   },
 ];
