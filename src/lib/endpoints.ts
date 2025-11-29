@@ -10,9 +10,12 @@ export const CHANGE_USER_PASSWORD = '/change-password/';
 export const USER_SEND_EMAIL = '/send-set-password-email/';
 export const MAKE_ADMIN = '/make-admin/';
 
+/*PERMISSIONS */
+export const CUSTOM_PERMISSIONS_BASE = '/accounts/custom-permissions/';
+
 /*DIRECTORIES*/
 export const INSTITUTIONS = '/accounts/educational-institutions/';
-export const PERMISSIONS = '/accounts/permissions/';
+export const CUSTOM_PERMISSIONS = CUSTOM_PERMISSIONS_BASE;
 export const POSITIONS = '/accounts/positions/';
 export const DEPARTMENTS = '/accounts/departments/';
 

@@ -2,9 +2,10 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { getSettings } from '@/api/settings/getSettings';
+import { DirectoryVariants } from '@/lib/types';
 
 export function useSettings(
-  activeTab: 'positions' | 'institutions' | 'departments',
+  activeTab: DirectoryVariants,
   page: number,
   page_size: number,
 ) {

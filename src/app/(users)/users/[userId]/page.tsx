@@ -63,7 +63,7 @@ export default function Page() {
         position: user.position?.id || '',
         department: user.department?.id || '',
         language: user.language || '',
-        custom_permission_id: user.custom_permission_id || '',
+        custom_permission_id: user.custom_permission.id || '',
       };
 
       setUserData(formatted);
@@ -100,7 +100,6 @@ export default function Page() {
 
     const updatedUserData = {
       ...userData,
-      custom_permission_id: null,
     };
 
     mutate(
@@ -319,7 +318,11 @@ export default function Page() {
             <FloatInput
               type="text"
               label="ERP icazələr"
-              value={userData?.custom_permission_id as string}
+              value={getDirectorySelectValue(
+                userData?.custom_permission_id,
+                directories,
+                'custom_permissions',
+              )}
               labelClassName="bg-subSection-bg"
               disabled
             />

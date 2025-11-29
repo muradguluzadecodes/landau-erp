@@ -1,23 +1,23 @@
 'use client';
 
-import { Pagination, Select, Table } from 'antd';
 import clsx from 'clsx';
 import { Pencil, Plus, X } from 'lucide-react';
 import { useState } from 'react';
 
 import { MainBtn } from '@/components/MainBtn';
 import { AddSettingModal } from '@/components/Modals/AddSettingModal';
-import { SettingsEditModal } from '@/components/Modals/SettingsEditModal';
+import { DirectoryEditModal } from '@/components/Modals/DirectoryEditModal';
 import { TagBtn } from '@/components/TagBtn';
-import { SettingItem, SettingsEditRow, SettingsVariants } from '@/lib/types';
+import { DirectoryEditRow, SettingItem, SettingsVariants } from '@/lib/types';
 import { useSettings } from '@/queries/settings/useSettings';
+import GenericTable from '@/widgets/tables/GenericTable';
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState<SettingsVariants>('positions');
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [addSettingModal, setAddSettingModal] = useState(false);
-  const [editRow, setEditRow] = useState<SettingsEditRow>(null);
+  const [editRow, setEditRow] = useState<DirectoryEditRow>(null);
 
   const { data, isLoading } = useSettings(activeTab, page, pageSize);
 
@@ -39,6 +39,7 @@ export default function Page() {
     key: item.id,
   }));
 
+  // TODO: FIND A WAY TO MOVE TO THE COLUMNS END IMPORT FROM THERE
   const columns: any[] = [
     {
       title: getTitle(),
@@ -86,7 +87,7 @@ export default function Page() {
 
   return (
     <>
-      <SettingsEditModal
+      <DirectoryEditModal
         type={activeTab}
         editRow={editRow}
         setEditRow={setEditRow}
@@ -138,46 +139,16 @@ export default function Page() {
           />
         </div>
 
-        <Table
-          loading={isLoading}
+        <GenericTable
+          isLoading={isLoading}
           columns={columns}
-          dataSource={tableData}
-          pagination={false}
-          rowKey="key"
-          className="custom-users-table"
+          dataTable={tableData}
+          currentPage={page}
+          pageSize={pageSize}
+          setPage={setPage}
+          setPageSize={setPageSize}
+          totalCount={data?.count}
         />
-
-        {/* PAGINATION */}
-        <div className="flex justify-between mt-6 items-center h-20">
-          <Pagination
-            current={page}
-            pageSize={pageSize}
-            total={data?.count || 0}
-            onChange={(p) => setPage(p)}
-            showSizeChanger={false}
-            defaultCurrent={1}
-            disabled={!data?.count}
-          />
-
-          <div className="flex gap-4 items-center h-[full] text-[14px] text-light">
-            <p className="mt-4">
-              {data?.count} loqdan {pageSize} ədəd göstər
-            </p>
-            <Select
-              value={pageSize}
-              onChange={(v) => {
-                setPageSize(v);
-                setPage(1);
-              }}
-              style={{ width: 100 }}
-              options={[
-                { value: 5, label: '5' },
-                { value: 10, label: '10' },
-                { value: 20, label: '20' },
-              ]}
-            />
-          </div>
-        </div>
       </div>
     </>
   );

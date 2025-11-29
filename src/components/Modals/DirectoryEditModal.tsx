@@ -7,20 +7,20 @@ import { useEffect, useState } from 'react';
 import FloatInput from '../FloatInput';
 import { MainBtn } from '../MainBtn';
 import { updateAndDeleteSettings } from '@/api/settings/updateSettings';
-import { SettingsEnum } from '@/lib/enums';
+import { DirectoriesEnum } from '@/lib/enums';
 import {
+  DirectoryEditRow,
   SettingRowActions,
-  SettingsEditRow,
   SettingsVariants,
 } from '@/lib/types';
 
-export const SettingsEditModal = ({
+export const DirectoryEditModal = ({
   setEditRow,
   type,
   editRow,
 }: {
-  editRow: SettingsEditRow;
-  setEditRow: (value: SettingsEditRow | null) => void;
+  editRow: DirectoryEditRow;
+  setEditRow: (value: DirectoryEditRow | null) => void;
   type: SettingsVariants;
 }) => {
   //TODO: Hələlik az dilini seçirik. Dil məsələsini dəqiqləşdirdikdən sonra dəyişiklikləri et
@@ -39,11 +39,13 @@ export const SettingsEditModal = ({
       positions: 'Vəzifədə düzəliş et',
       departments: 'Departamentdə düzəliş et',
       institutions: 'Təhsil müəssisəsində düzəliş et',
+      custom_permissions: 'ERP icazəsində düzəliş et',
     },
     delete: {
       positions: 'Vəzifəni sil',
       departments: 'Departamenti sil',
       institutions: 'Təhsil müəssisəsini sil',
+      custom_permissions: 'ERP icazəsini sil',
     },
   } as const;
 
@@ -51,14 +53,19 @@ export const SettingsEditModal = ({
     positions: `"${editRow?.names?.name}" vəzidəsini silmək istədiyinizdən əminsiniz?`,
     departments: `"${editRow?.names?.name}" departamentini silmək istədiyinizdən əminsiniz?`,
     institutions: `"${editRow?.names?.name}" adlı təhsil müəssisəsini silmək istədiyinizdən əminsiniz?`,
+    custom_permissions: `"${editRow?.names?.name}" adlı icazəni silmək istədiyinizdən əminsiniz?`,
   };
+
+  /*BU FORMADA YAZIRIQ CHUNKI CUSTOM PERMISSION FERQLI SEHIFEDE, FERQLI FORMADA CHAGIRILIR */
+  const QUERY_KEYS =
+    type === 'custom_permissions' ? [type] : ['settings', type];
 
   const { mutate, isPending } = useMutation({
     mutationFn: updateAndDeleteSettings,
     onSuccess: () => {
       setEditRow(null);
       queryClient.invalidateQueries({
-        queryKey: ['settings', type],
+        queryKey: QUERY_KEYS,
       });
     },
   });
@@ -66,7 +73,7 @@ export const SettingsEditModal = ({
   if (!editRow) return null;
 
   const modalTitle = labels[action as SettingRowActions][type];
-  const label = SettingsEnum[type];
+  const label = DirectoriesEnum[type];
 
   const handleCancel = () => {
     setEditRow(null);

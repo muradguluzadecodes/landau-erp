@@ -4,9 +4,10 @@ import { toast } from 'react-toastify';
 import api from '@/lib/axios';
 import { POSITIONS, INSTITUTIONS, DEPARTMENTS } from '@/lib/endpoints';
 import { INTERNAL_SERVER } from '@/lib/errors';
+import { DirectoryVariants } from '@/lib/types';
 
 export async function getSettings(
-  type: 'positions' | 'institutions' | 'departments',
+  type: DirectoryVariants,
   page: number,
   page_size: number,
 ) {
@@ -14,6 +15,7 @@ export async function getSettings(
     positions: POSITIONS,
     institutions: INSTITUTIONS,
     departments: DEPARTMENTS,
+    permissions: '',
   };
 
   try {
