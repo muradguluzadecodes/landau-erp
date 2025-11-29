@@ -15,7 +15,7 @@ export async function getSettings(
     positions: POSITIONS,
     institutions: INSTITUTIONS,
     departments: DEPARTMENTS,
-    permissions: '',
+    custom_permissions: '',
   };
 
   try {
